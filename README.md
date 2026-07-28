@@ -1,3 +1,4 @@
+
 # 🛡️ SOC Log Analyzer
 
 A web-based **Security Operations Center (SOC) Log Analyzer** built with **Python** and **Flask** that analyzes authentication log files, detects suspicious login activities, identifies potential brute-force attacks, and presents security insights through an interactive dashboard.
@@ -158,27 +159,6 @@ Identify Suspicious Users
           ▼
 Generate Security Dashboard
 ```
-
----
-
-## 📸 Application Preview
-
-
-### 🏠 Dashboard
-
-<p align="center">
-  <img src="Dashboard.png" alt="Dashboard" width="900">
-</p>
-
----
-
-### 📊 Analysis Report
-
-<p align="center">
-  <img src="Analysis report.png" alt="Analysis Report" width="900">
-</p>
-
----
 
 ## 🔐 Security Features
 
