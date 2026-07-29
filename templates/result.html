@@ -1,103 +1,284 @@
-<!DOCTYPE html>
-
-<html>
-
-<head>
-
-<title>
-Analysis Result
-</title>
-
-<link rel="stylesheet" href="/static/style.css">
-
-</head>
+{% extends "base.html" %}
 
 
-<body>
-
-
-<div class="container">
-
-
-<h1>
-Security Analysis Report
-</h1>
+{% block title %}
+SIEM Lite | Threat Dashboard
+{% endblock %}
 
 
 
-<div class="cards">
+{% block content %}
 
 
-<div class="card">
-<h2>{{data.total}}</h2>
-<p>Total Logs</p>
+<div class="soc-dashboard page">
+
+
+    <!-- HEADER -->
+
+    <section class="soc-header">
+
+        <div>
+
+            <h1>
+                Security Operations Center
+            </h1>
+
+            <p>
+                Real-time log intelligence and threat analysis
+            </p>
+
+        </div>
+
+
+        <div class="system-status">
+
+            <span></span>
+
+            SYSTEM ONLINE
+
+        </div>
+
+
+    </section>
+
+
+
+
+
+    <!-- HERO THREAT PANEL -->
+
+
+    <section class="threat-panel">
+
+
+        <div class="threat-info">
+
+
+            <p>
+                CURRENT THREAT LEVEL
+            </p>
+
+
+            <h2>
+
+                {{ data.threat_score if data.threat_score else 0 }}
+
+                %
+
+            </h2>
+
+
+            <div class="risk-label">
+
+                HIGH RISK
+
+            </div>
+
+
+        </div>
+
+
+
+        <div class="threat-ring">
+
+
+            <div>
+
+                <i class="ri-shield-cross-line"></i>
+
+            </div>
+
+
+        </div>
+
+
+
+    </section>
+
+
+
+
+
+
+
+
+    <!-- METRICS -->
+
+
+    <section class="metric-row">
+
+
+        <div class="metric">
+
+
+            <span>
+                TOTAL EVENTS
+            </span>
+
+
+            <strong>
+                {{ data.total_logs if data.total_logs else 0 }}
+            </strong>
+
+
+        </div>
+
+
+
+        <div class="metric">
+
+
+            <span>
+                THREATS
+            </span>
+
+
+            <strong>
+                {{ data.threats if data.threats else 0 }}
+            </strong>
+
+
+        </div>
+
+
+
+
+        <div class="metric">
+
+
+            <span>
+                SUSPICIOUS IPS
+            </span>
+
+
+            <strong>
+                {{ data.suspicious_ips|length if data.suspicious_ips else 0 }}
+            </strong>
+
+
+        </div>
+
+
+
+
+    </section>
+
+
+
+
+
+
+
+
+    <!-- LOWER GRID -->
+
+
+    <section class="soc-grid">
+        <section class="analytics-grid">
+
+
+            <div class="chart-card">
+
+                <div class="chart-title">
+                    Threat Severity
+                </div>
+
+                <canvas id="severityChart"></canvas>
+
+            </div>
+
+
+
+            <div class="chart-card">
+
+                <div class="chart-title">
+                    Activity Timeline
+                </div>
+
+                <canvas id="timelineChart"></canvas>
+
+            </div>
+
+
+        </section>
+
+
+
+
+
+        <section class="soc-grid">
+
+
+            <div class="soc-card">
+
+                <h3>
+                    Recent Security Events
+                </h3>
+
+
+                <div class="event critical">
+                    <span></span>
+                    Brute force login attempt detected
+                </div>
+
+
+                <div class="event warning">
+                    <span></span>
+                    Multiple failed authentication events
+                </div>
+
+
+                <div class="event">
+                    <span></span>
+                    Suspicious network behaviour detected
+                </div>
+
+
+            </div>
+
+
+
+
+            <div class="soc-card">
+
+                <h3>
+                    Threat Sources
+                </h3>
+
+
+                <div class="source">
+
+                    192.168.1.45
+
+                    <b>
+                        HIGH
+                    </b>
+
+                </div>
+
+
+                <div class="source">
+
+                    10.0.0.12
+
+                    <b>
+                        MEDIUM
+                    </b>
+
+                </div>
+
+
+            </div>
+
+
+        </section>
+
+    </section>
+
+
+
+
 </div>
 
 
-<div class="card">
-<h2>{{data.success}}</h2>
-<p>Successful Login</p>
-</div>
-
-
-
-<div class="card danger">
-<h2>{{data.failed}}</h2>
-<p>Failed Login</p>
-</div>
-
-
-<div class="card">
-<h2>{{data.ips}}</h2>
-<p>IP Address</p>
-</div>
-
-
-</div>
-
-
-
-<h2>
-🚨 Suspicious Activity
-</h2>
-
-
-<table>
-
-
-<tr>
-
-<th>User</th>
-<th>Attempts</th>
-<th>Severity</th>
-
-</tr>
-
-
-{% for item in data.suspicious %}
-
-<tr>
-
-<td>{{item.user}}</td>
-
-<td>{{item.attempts}}</td>
-
-<td class="danger">
-{{item.level}}
-</td>
-
-</tr>
-
-
-{% endfor %}
-
-
-</table>
-
-
-</div>
-
-
-</body>
-
-</html>
+{% endblock %}

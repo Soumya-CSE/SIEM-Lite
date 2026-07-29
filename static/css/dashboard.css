@@ -1,0 +1,779 @@
+/* ============================================
+   SIEM LITE - SOC COMMAND CENTER DASHBOARD
+   ============================================ */
+
+
+.soc-dashboard {
+
+    width:100%;
+
+    padding:20px 10px;
+
+    color:white;
+
+}
+
+
+
+/* HEADER */
+
+.soc-header {
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:35px;
+
+}
+
+
+.soc-header h1 {
+
+    font-size:38px;
+
+    font-weight:800;
+
+    letter-spacing:-1px;
+
+
+    background:
+    linear-gradient(
+        90deg,
+        #ffffff,
+        #00d4ff
+    );
+
+
+    -webkit-background-clip:text;
+
+    color:transparent;
+
+}
+
+
+
+.soc-header p {
+
+    color:#94a3b8;
+
+    margin-top:8px;
+
+    font-size:15px;
+
+}
+
+
+
+
+
+/* SYSTEM STATUS */
+
+
+.system-status {
+
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+
+
+    padding:12px 20px;
+
+
+    border-radius:50px;
+
+
+    background:
+
+    rgba(0,212,255,0.08);
+
+
+    border:
+
+    1px solid rgba(0,212,255,0.25);
+
+
+    color:#00d4ff;
+
+
+    font-size:14px;
+
+
+}
+
+
+
+.system-status span {
+
+
+    width:10px;
+
+    height:10px;
+
+
+    border-radius:50%;
+
+
+    background:#22c55e;
+
+
+    box-shadow:
+
+    0 0 15px #22c55e;
+
+
+}
+
+
+
+
+
+/* THREAT HERO */
+
+
+.threat-panel {
+
+
+    min-height:260px;
+
+
+    display:flex;
+
+
+    justify-content:space-between;
+
+
+    align-items:center;
+
+
+    padding:40px;
+
+
+    border-radius:28px;
+
+
+    background:
+
+
+    linear-gradient(
+
+    135deg,
+
+    rgba(0,212,255,.15),
+
+    rgba(10,15,35,.85)
+
+    );
+
+
+    border:
+
+    1px solid rgba(0,212,255,.25);
+
+
+    box-shadow:
+
+
+    0 20px 60px rgba(0,0,0,.35);
+
+
+    margin-bottom:30px;
+
+
+}
+
+
+
+
+.threat-info p {
+
+
+    color:#94a3b8;
+
+    font-size:14px;
+
+    letter-spacing:2px;
+
+
+}
+
+
+
+.threat-info h2 {
+
+
+    font-size:80px;
+
+
+    margin:10px 0;
+
+
+    font-weight:900;
+
+
+}
+
+
+
+
+
+.risk-label {
+
+
+    display:inline-block;
+
+
+    padding:8px 18px;
+
+
+    border-radius:30px;
+
+
+    color:#ff6b6b;
+
+
+    background:
+
+    rgba(239,68,68,.15);
+
+
+    border:
+
+    1px solid rgba(239,68,68,.3);
+
+
+}
+
+
+
+
+
+/* THREAT ICON */
+
+
+.threat-ring {
+
+
+    width:220px;
+
+    height:220px;
+
+
+    border-radius:50%;
+
+
+    display:flex;
+
+
+    align-items:center;
+
+
+    justify-content:center;
+
+
+    background:
+
+
+    conic-gradient(
+
+    #00d4ff,
+
+    #5b5eff,
+
+    #ef4444,
+
+    #00d4ff
+
+    );
+
+
+    animation:
+
+    rotateRing 8s linear infinite;
+
+
+}
+
+
+
+.threat-ring div {
+
+
+    width:170px;
+
+    height:170px;
+
+
+    border-radius:50%;
+
+
+    display:flex;
+
+
+    align-items:center;
+
+
+    justify-content:center;
+
+
+    background:#050816;
+
+
+}
+
+
+.threat-ring i {
+
+
+    font-size:70px;
+
+
+    color:#00d4ff;
+
+
+}
+
+
+
+
+@keyframes rotateRing {
+
+
+from{
+
+transform:rotate(0deg);
+
+}
+
+to{
+
+transform:rotate(360deg);
+
+}
+
+
+}
+
+
+
+
+
+/* METRICS */
+
+
+.metric-row {
+
+
+    display:grid;
+
+
+    grid-template-columns:
+
+    repeat(3,1fr);
+
+
+    gap:25px;
+
+
+    margin-bottom:30px;
+
+
+}
+
+
+
+
+.metric {
+
+
+    padding:28px;
+
+
+    border-radius:22px;
+
+
+    background:
+
+    rgba(255,255,255,.04);
+
+
+    border:
+
+    1px solid rgba(255,255,255,.08);
+
+
+    backdrop-filter:blur(20px);
+
+
+    transition:.3s;
+
+
+}
+
+
+
+.metric:hover {
+
+
+    transform:translateY(-8px);
+
+
+    border-color:#00d4ff;
+
+
+    box-shadow:
+
+    0 15px 40px rgba(0,212,255,.15);
+
+
+}
+
+
+
+.metric span {
+
+
+    color:#94a3b8;
+
+
+    font-size:14px;
+
+
+}
+
+
+
+.metric strong {
+
+
+    display:block;
+
+
+    margin-top:15px;
+
+
+    font-size:42px;
+
+
+}
+
+
+
+
+
+/* LOWER SECTION */
+
+
+.soc-grid {
+
+
+    display:grid;
+
+
+    grid-template-columns:
+
+    1fr 1fr;
+
+
+    gap:25px;
+
+
+}
+
+
+
+
+.soc-card {
+
+
+    padding:30px;
+
+
+    border-radius:25px;
+
+
+    background:
+
+
+    rgba(7,15,35,.75);
+
+
+    border:
+
+    1px solid rgba(255,255,255,.08);
+
+
+    backdrop-filter:blur(20px);
+
+
+}
+
+
+
+
+.soc-card h3 {
+
+
+    margin-bottom:25px;
+
+
+    font-size:20px;
+
+
+}
+
+
+
+
+
+/* EVENTS */
+
+
+.event {
+
+
+    display:flex;
+
+
+    align-items:center;
+
+
+    gap:15px;
+
+
+    padding:16px;
+
+
+    margin-bottom:12px;
+
+
+    border-radius:15px;
+
+
+    background:
+
+    rgba(255,255,255,.04);
+
+
+}
+
+
+
+.event span {
+
+
+    width:10px;
+
+
+    height:10px;
+
+
+    border-radius:50%;
+
+
+    background:#ef4444;
+
+
+    box-shadow:
+
+    0 0 15px #ef4444;
+
+
+}
+
+
+
+
+
+/* SOURCES */
+
+
+.source {
+
+
+    display:flex;
+
+
+    justify-content:space-between;
+
+
+    align-items:center;
+
+
+    padding:16px;
+
+
+    margin-bottom:12px;
+
+
+    border-radius:15px;
+
+
+    background:
+
+    rgba(255,255,255,.04);
+
+
+}
+
+
+
+.source b {
+
+
+    padding:5px 15px;
+
+
+    border-radius:30px;
+
+
+    color:#ff6464;
+
+
+    background:
+
+    rgba(239,68,68,.15);
+
+
+}
+
+
+
+
+
+/* RESPONSIVE */
+
+
+@media(max-width:900px){
+
+
+.soc-header,
+
+.threat-panel{
+
+flex-direction:column;
+
+gap:30px;
+
+}
+
+
+.metric-row,
+
+.soc-grid{
+
+grid-template-columns:1fr;
+
+}
+
+
+}
+
+.analytics-grid{
+
+
+display:grid;
+
+grid-template-columns:1fr 1fr;
+
+gap:25px;
+
+margin:30px 0;
+
+
+}
+
+
+
+.chart-card{
+
+
+padding:30px;
+
+
+height:380px;
+
+
+border-radius:25px;
+
+
+background:
+
+
+linear-gradient(
+
+145deg,
+
+rgba(15,23,42,.9),
+
+rgba(2,6,23,.8)
+
+);
+
+
+border:
+
+1px solid rgba(255,255,255,.08);
+
+
+box-shadow:
+
+
+0 20px 60px rgba(0,0,0,.4);
+
+
+}
+
+
+
+.chart-title{
+
+
+font-size:18px;
+
+
+font-weight:700;
+
+
+margin-bottom:25px;
+
+
+color:white;
+
+
+}
+
+
+
+.chart-card canvas{
+
+
+max-height:280px;
+
+
+}
+
+
+
+.event.critical span{
+
+
+background:#ef4444;
+
+
+}
+
+
+
+.event.warning span{
+
+
+background:#f59e0b;
+
+
+}
