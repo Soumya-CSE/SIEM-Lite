@@ -1,23 +1,225 @@
 {% extends "base.html" %}
 
+
 {% block title %}
-
-SIEM Lite
-
+SIEM Lite | Security Log Analyzer
 {% endblock %}
+
+
 
 {% block content %}
 
-<h1 style="font-size:60px;margin-top:100px;">
 
-Welcome to SIEM Lite
+<section class="hero">
 
-</h1>
 
-<p style="margin-top:20px;color:#94A3B8;font-size:22px;max-width:700px;">
+    <!-- Top Badge -->
 
-A modern Security Event & Log Analysis Platform.
+    <div class="hero-badge">
 
-</p>
+        <i class="ri-shield-check-line"></i>
+
+        Advanced Security Monitoring
+
+    </div>
+
+
+
+    <!-- Main Heading -->
+
+    <h1>
+
+        Security Event &
+
+        <br>
+
+        <span>Log Analysis Platform</span>
+
+    </h1>
+
+
+
+    <p>
+
+        Analyze server logs, detect suspicious activity,
+
+        identify security threats and generate actionable
+
+        insights within seconds.
+
+    </p>
+
+
+
+
+    <!-- Upload Card -->
+
+    <div class="upload-card">
+
+
+        <form action="/analyze" method="POST" enctype="multipart/form-data">
+
+
+            <label class="upload-area" for="file-upload">
+
+
+                <i class="ri-upload-cloud-2-line"></i>
+
+
+                <h3>
+
+                    Drop your log file here
+
+                </h3>
+
+
+                <span>
+
+                    or click to browse
+
+                    <br>
+
+                    Supported formats: .log, .txt
+
+                </span>
+
+
+
+                <input
+
+                    id="file-upload"
+
+                    type="file"
+
+                    name="logfile"
+
+                    accept=".log,.txt"
+
+                    required
+
+                >
+
+
+            </label>
+
+
+
+            <button class="upload-btn" type="submit">
+
+
+                Analyze Logs
+
+                <i class="ri-arrow-right-line"></i>
+
+
+            </button>
+
+
+
+        </form>
+
+
+    </div>
+
+
+
+
+
+    <!-- Feature Cards -->
+
+
+    <div class="features">
+
+
+
+        <div class="feature-card">
+
+
+            <i class="ri-shield-flash-line"></i>
+
+
+            <h3>
+
+                Threat Detection
+
+            </h3>
+
+
+            <p>
+
+                Detect suspicious patterns,
+
+                malicious activity and security events.
+
+            </p>
+
+
+        </div>
+
+
+
+
+
+        <div class="feature-card">
+
+
+            <i class="ri-lock-password-line"></i>
+
+
+            <h3>
+
+                Failed Login Analysis
+
+            </h3>
+
+
+            <p>
+
+                Identify brute force attempts
+
+                and abnormal authentication behaviour.
+
+            </p>
+
+
+        </div>
+
+
+
+
+
+        <div class="feature-card">
+
+
+            <i class="ri-file-chart-line"></i>
+
+
+            <h3>
+
+                Security Insights
+
+            </h3>
+
+
+            <p>
+
+                Convert raw logs into meaningful
+
+                security intelligence.
+
+            </p>
+
+
+        </div>
+
+
+
+    </div>
+
+
+
+</section>
+
+
 
 {% endblock %}
