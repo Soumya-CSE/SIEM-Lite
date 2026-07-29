@@ -1,113 +1,512 @@
-.background{
+/* =========================================
+   SIEM LITE - FUTURISTIC ANIMATIONS
+   ========================================= */
 
-position:fixed;
 
-inset:0;
+/* -----------------------------
+   PAGE LOAD ANIMATION
+----------------------------- */
 
-overflow:hidden;
 
-z-index:-10;
+.page {
 
-}
-
-.grid{
-
-position:absolute;
-
-width:200%;
-
-height:200%;
-
-background-image:
-
-linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),
-
-linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);
-
-background-size:70px 70px;
-
-transform:rotate(8deg);
-
-animation:gridMove 20s linear infinite;
+    animation: pageEnter 0.6s ease forwards;
 
 }
 
-@keyframes gridMove{
 
-0%{
+@keyframes pageEnter {
 
-transform:translateY(0) rotate(8deg);
 
-}
+    from {
 
-100%{
+        opacity:0;
 
-transform:translateY(-70px) rotate(8deg);
+        transform:translateY(20px);
 
-}
+    }
 
-}
 
-.blob{
+    to {
 
-position:absolute;
+        opacity:1;
 
-border-radius:50%;
+        transform:translateY(0);
 
-filter:blur(130px);
-
-opacity:.3;
+    }
 
 }
 
-.blob1{
 
-width:450px;
 
-height:450px;
 
-background:#1EA7FF;
+/* -----------------------------
+   GLOW PULSE
+----------------------------- */
 
-top:-100px;
 
-left:-100px;
+.glow-pulse {
 
-animation:float1 10s ease-in-out infinite;
 
-}
+    animation:
 
-.blob2{
+    glowPulse 3s infinite ease-in-out;
 
-width:350px;
-
-height:350px;
-
-background:#0D5EFF;
-
-bottom:-120px;
-
-right:-120px;
-
-animation:float2 12s ease-in-out infinite;
 
 }
 
-@keyframes float1{
 
-50%{
 
-transform:translate(70px,40px);
+@keyframes glowPulse {
+
+
+    0% {
+
+
+        opacity:.5;
+
+    }
+
+
+    50% {
+
+
+        opacity:1;
+
+    }
+
+
+    100% {
+
+
+        opacity:.5;
+
+    }
+
 
 }
 
+
+
+
+
+/* -----------------------------
+   FLOATING CARD EFFECT
+----------------------------- */
+
+
+.float {
+
+
+    animation:
+
+    floating 5s ease-in-out infinite;
+
+
 }
 
-@keyframes float2{
 
-50%{
 
-transform:translate(-60px,-50px);
+@keyframes floating {
+
+
+    0% {
+
+
+        transform:translateY(0);
+
+    }
+
+
+    50% {
+
+
+        transform:translateY(-10px);
+
+    }
+
+
+    100% {
+
+
+        transform:translateY(0);
+
+    }
+
 
 }
+
+
+
+
+/* -----------------------------
+   BUTTON ANIMATION
+----------------------------- */
+
+
+.upload-btn {
+
+
+    position:relative;
+
+    overflow:hidden;
+
+
+}
+
+
+
+.upload-btn::before {
+
+
+    content:"";
+
+
+    position:absolute;
+
+
+    top:0;
+
+
+    left:-100%;
+
+
+    width:100%;
+
+
+    height:100%;
+
+
+    background:
+
+    linear-gradient(
+
+        120deg,
+
+        transparent,
+
+        rgba(255,255,255,.35),
+
+        transparent
+
+    );
+
+
+    transition:.5s;
+
+
+}
+
+
+
+.upload-btn:hover::before {
+
+
+    left:100%;
+
+
+}
+
+
+
+
+
+/* -----------------------------
+   CARD HOVER EFFECT
+----------------------------- */
+
+
+.feature-card {
+
+
+    transition:
+
+    transform .3s ease,
+
+    border-color .3s ease,
+
+    box-shadow .3s ease;
+
+
+}
+
+
+
+.feature-card:hover {
+
+
+    transform:
+
+    translateY(-8px);
+
+
+    box-shadow:
+
+
+    0 15px 40px rgba(0,212,255,.15);
+
+
+}
+
+
+
+
+
+/* -----------------------------
+   UPLOAD BORDER ANIMATION
+----------------------------- */
+
+
+.upload-area {
+
+
+    position:relative;
+
+
+    overflow:hidden;
+
+
+}
+
+
+
+
+.upload-area::after {
+
+
+    content:"";
+
+
+    position:absolute;
+
+
+    inset:0;
+
+
+    border-radius:20px;
+
+
+    background:
+
+    linear-gradient(
+
+        90deg,
+
+        transparent,
+
+        rgba(0,212,255,.25),
+
+        transparent
+
+    );
+
+
+    transform:translateX(-100%);
+
+
+}
+
+
+
+.upload-area:hover::after {
+
+
+    animation:
+
+    borderSweep 1.5s infinite;
+
+
+}
+
+
+
+@keyframes borderSweep {
+
+
+    to {
+
+
+        transform:translateX(100%);
+
+
+    }
+
+}
+
+
+
+
+
+/* -----------------------------
+   TEXT GLOW
+----------------------------- */
+
+
+.hero h1 span {
+
+
+    animation:
+
+    textGlow 4s infinite alternate;
+
+
+}
+
+
+
+@keyframes textGlow {
+
+
+    from {
+
+
+        filter:
+
+        drop-shadow(
+
+        0 0 5px rgba(0,212,255,.3)
+
+        );
+
+
+    }
+
+
+    to {
+
+
+        filter:
+
+        drop-shadow(
+
+        0 0 20px rgba(91,94,255,.6)
+
+        );
+
+
+    }
+
+}
+
+
+
+
+
+/* -----------------------------
+   SIDEBAR MENU ANIMATION
+----------------------------- */
+
+
+.menu a {
+
+
+    transition:
+
+    all .25s ease;
+
+
+}
+
+
+
+
+.menu a:hover i {
+
+
+    transform:
+
+    translateX(3px);
+
+
+}
+
+
+
+.menu a i {
+
+
+    transition:
+
+    transform .25s ease;
+
+
+}
+
+
+
+
+
+/* -----------------------------
+   STATUS ONLINE EFFECT
+----------------------------- */
+
+
+.status-dot {
+
+
+    animation:
+
+    onlinePulse 2s infinite;
+
+
+}
+
+
+
+@keyframes onlinePulse {
+
+
+    0% {
+
+
+        box-shadow:
+
+        0 0 0 0 rgba(34,197,94,.7);
+
+
+    }
+
+
+    70% {
+
+
+        box-shadow:
+
+        0 0 0 12px rgba(34,197,94,0);
+
+
+    }
+
+
+    100% {
+
+
+        box-shadow:
+
+        0 0 0 0 rgba(34,197,94,0);
+
+
+    }
+
+}
+
+
+
+
+
+/* -----------------------------
+   SMOOTH GLOBAL TRANSITIONS
+----------------------------- */
+
+
+button,
+a,
+input {
+
+
+    transition:
+
+    all .25s ease;
+
 
 }

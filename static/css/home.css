@@ -11,7 +11,7 @@
 .hero {
 
 
-    min-height: calc(50vh - 50px);
+    min-height: calc(100vh - 80px);
 
 
     display:flex;
@@ -24,7 +24,7 @@
 
 
 
-    max-width:900px;
+    max-width:1100px;
 
 
 }
@@ -410,9 +410,7 @@
 
 .upload-btn {
 
-
     margin-top:20px;
-
 
 
     padding:14px 32px;
