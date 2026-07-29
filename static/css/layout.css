@@ -1,0 +1,418 @@
+/* =========================================
+   SIEM LITE - MAIN LAYOUT
+   ========================================= */
+
+
+/* -----------------------------
+   GLOBAL RESET
+----------------------------- */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+html {
+    scroll-behavior: smooth;
+}
+
+
+body {
+
+    font-family: "Inter", sans-serif;
+
+    background: #050816;
+
+    color: #e5f6ff;
+
+    min-height: 100vh;
+
+    overflow-x: hidden;
+
+}
+
+
+/* Remove default link style */
+
+a {
+
+    text-decoration: none;
+
+    color: inherit;
+
+}
+
+
+/* -----------------------------
+   ANIMATED BACKGROUND
+----------------------------- */
+
+
+.background {
+
+    position: fixed;
+
+    inset: 0;
+
+    z-index: -1;
+
+    overflow: hidden;
+
+    background:
+        radial-gradient(
+            circle at top left,
+            rgba(0, 212, 255, 0.12),
+            transparent 35%
+        ),
+        radial-gradient(
+            circle at bottom right,
+            rgba(91, 94, 255, 0.15),
+            transparent 40%
+        ),
+        #050816;
+
+}
+
+
+/* Cyber grid */
+
+.grid {
+
+    position: absolute;
+
+    inset: 0;
+
+
+    background-image:
+
+        linear-gradient(
+            rgba(255,255,255,0.035) 1px,
+            transparent 1px
+        ),
+
+        linear-gradient(
+            90deg,
+            rgba(255,255,255,0.035) 1px,
+            transparent 1px
+        );
+
+
+    background-size:
+
+        50px 50px;
+
+
+    mask-image:
+
+        radial-gradient(
+            circle,
+            black,
+            transparent 80%
+        );
+
+
+    animation: gridMove 25s linear infinite;
+
+}
+
+
+
+/* Moving grid animation */
+
+@keyframes gridMove {
+
+
+    from {
+
+        transform: translateY(0);
+
+    }
+
+
+    to {
+
+        transform: translateY(50px);
+
+    }
+
+}
+
+
+
+/* -----------------------------
+   LIGHT GLOW EFFECTS
+----------------------------- */
+
+
+.glow {
+
+    position: absolute;
+
+    width: 500px;
+
+    height: 500px;
+
+    border-radius: 50%;
+
+    filter: blur(120px);
+
+    opacity: 0.35;
+
+}
+
+
+
+.glow-left {
+
+
+    background: #00d4ff;
+
+    top: -200px;
+
+    left: -200px;
+
+
+}
+
+
+
+.glow-right {
+
+
+    background: #5b5eff;
+
+    bottom: -200px;
+
+    right: -200px;
+
+
+}
+
+
+
+
+/* Noise texture */
+
+.noise {
+
+
+    position: absolute;
+
+    inset: 0;
+
+
+    background-image:
+
+    url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='.3'/%3E%3C/svg%3E");
+
+
+    opacity: 0.035;
+
+
+}
+
+
+
+/* -----------------------------
+   APPLICATION STRUCTURE
+----------------------------- */
+
+
+.app {
+
+
+    display: flex;
+
+    min-height: 100vh;
+
+
+}
+
+
+
+/* -----------------------------
+   MAIN CONTENT AREA
+----------------------------- */
+
+
+.main-content {
+
+
+    margin-left: 240px;
+
+
+    width: calc(100% - 240px);
+
+
+    min-height: 100vh;
+
+
+    padding: 40px;
+
+
+    position: relative;
+
+
+}
+
+
+
+/* -----------------------------
+   GLASS PANEL BASE
+----------------------------- */
+
+
+.glass {
+
+
+    background:
+
+    rgba(255,255,255,0.05);
+
+
+    border:
+
+    1px solid rgba(255,255,255,0.08);
+
+
+    backdrop-filter:
+
+    blur(20px);
+
+
+    -webkit-backdrop-filter:
+
+    blur(20px);
+
+
+    border-radius: 18px;
+
+
+}
+
+
+
+/* -----------------------------
+   SCROLLBAR
+----------------------------- */
+
+
+::-webkit-scrollbar {
+
+
+    width: 8px;
+
+
+}
+
+
+
+::-webkit-scrollbar-track {
+
+
+    background:
+
+    #050816;
+
+
+}
+
+
+
+::-webkit-scrollbar-thumb {
+
+
+    background:
+
+    rgba(0,212,255,0.4);
+
+
+    border-radius: 20px;
+
+
+}
+
+
+
+::-webkit-scrollbar-thumb:hover {
+
+
+    background:
+
+    rgba(0,212,255,0.7);
+
+
+}
+
+
+
+/* -----------------------------
+   SELECTION COLOR
+----------------------------- */
+
+
+::selection {
+
+
+    background:
+
+    rgba(0,212,255,0.3);
+
+
+    color:white;
+
+
+}
+
+
+
+/* -----------------------------
+   PAGE CONTAINER
+----------------------------- */
+
+
+.page {
+
+
+    animation:
+
+    fadeIn 0.5s ease;
+
+
+}
+
+
+
+/* -----------------------------
+   BASIC FADE
+----------------------------- */
+
+
+@keyframes fadeIn {
+
+
+    from {
+
+
+        opacity:0;
+
+        transform:translateY(10px);
+
+
+    }
+
+
+    to {
+
+
+        opacity:1;
+
+        transform:translateY(0);
+
+
+    }
+
+
+}

@@ -1,0 +1,113 @@
+.background{
+
+position:fixed;
+
+inset:0;
+
+overflow:hidden;
+
+z-index:-10;
+
+}
+
+.grid{
+
+position:absolute;
+
+width:200%;
+
+height:200%;
+
+background-image:
+
+linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),
+
+linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);
+
+background-size:70px 70px;
+
+transform:rotate(8deg);
+
+animation:gridMove 20s linear infinite;
+
+}
+
+@keyframes gridMove{
+
+0%{
+
+transform:translateY(0) rotate(8deg);
+
+}
+
+100%{
+
+transform:translateY(-70px) rotate(8deg);
+
+}
+
+}
+
+.blob{
+
+position:absolute;
+
+border-radius:50%;
+
+filter:blur(130px);
+
+opacity:.3;
+
+}
+
+.blob1{
+
+width:450px;
+
+height:450px;
+
+background:#1EA7FF;
+
+top:-100px;
+
+left:-100px;
+
+animation:float1 10s ease-in-out infinite;
+
+}
+
+.blob2{
+
+width:350px;
+
+height:350px;
+
+background:#0D5EFF;
+
+bottom:-120px;
+
+right:-120px;
+
+animation:float2 12s ease-in-out infinite;
+
+}
+
+@keyframes float1{
+
+50%{
+
+transform:translate(70px,40px);
+
+}
+
+}
+
+@keyframes float2{
+
+50%{
+
+transform:translate(-60px,-50px);
+
+}
+
+}

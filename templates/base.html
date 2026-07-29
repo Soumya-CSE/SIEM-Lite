@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>
+        {% block title %}
+        SIEM Lite
+        {% endblock %}
+    </title>
+
+    <!-- Google Font -->
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <!-- Remix Icons -->
+
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css" rel="stylesheet">
+
+    <!-- CSS -->
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/variables.css') }}">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/layout.css') }}">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/sidebar.css') }}">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/animations.css') }}">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/responsive.css') }}">
+
+</head>
+
+<body>
+
+    <!-- Animated Background -->
+
+    <div class="background">
+
+        <div class="grid"></div>
+
+        <div class="glow glow-left"></div>
+
+        <div class="glow glow-right"></div>
+
+        <div class="noise"></div>
+
+    </div>
+
+    <!-- Main Layout -->
+
+    <div class="app">
+
+        <!-- Sidebar -->
+
+        <aside class="sidebar">
+
+            <div>
+
+                <!-- Logo -->
+
+                <div class="logo">
+
+                    <div class="logo-icon">
+
+                        <i class="ri-shield-keyhole-line"></i>
+
+                    </div>
+
+                    <div>
+
+                        <h2>SIEM Lite</h2>
+
+                        <span>Security Operations</span>
+
+                    </div>
+
+                </div>
+
+                <!-- Navigation -->
+
+                <nav class="menu">
+
+                    <a href="/"
+                        class="{% if request.path == '/' %}active{% endif %}">
+
+                        <i class="ri-home-5-line"></i>
+
+                        Home
+
+                    </a>
+
+                    <a href="#"
+                        class="{% if request.path == '/dashboard' %}active{% endif %}">
+
+                        <i class="ri-dashboard-horizontal-line"></i>
+
+                        Dashboard
+
+                    </a>
+
+                    <div class="menu-divider"></div>
+
+                    <div class="menu-label">
+
+                        COMING SOON
+
+                    </div>
+
+                    <a class="disabled">
+
+                        <i class="ri-history-line"></i>
+
+                        History
+
+                    </a>
+
+                    <a class="disabled">
+
+                        <i class="ri-alarm-warning-line"></i>
+
+                        Alerts
+
+                    </a>
+
+                    <a class="disabled">
+
+                        <i class="ri-file-chart-line"></i>
+
+                        Reports
+
+                    </a>
+
+                    <a class="disabled">
+
+                        <i class="ri-settings-3-line"></i>
+
+                        Settings
+
+                    </a>
+
+                </nav>
+
+            </div>
+
+            <!-- Bottom -->
+
+            <div class="sidebar-bottom">
+
+                <div class="status-card">
+
+                    <div class="status-dot"></div>
+
+                    <div>
+
+                        <h4>System Online</h4>
+
+                        <span>Version 1.0</span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </aside>
+
+        <!-- Main -->
+
+        <main class="main-content">
+
+            {% block content %}
+
+            {% endblock %}
+
+        </main>
+
+    </div>
+
+    <!-- JS -->
+
+    <script src="{{ url_for('static', filename='js/ui.js') }}"></script>
+
+</body>
+
+</html>
