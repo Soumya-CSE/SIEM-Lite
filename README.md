@@ -161,15 +161,29 @@ Generate Security Dashboard
 ---
 ## 📸 Application Preview
 
-### 🏠 Dashboard
+### 🏠 Home Page 
 
-<img width="1847" height="897" alt="Dashboard" src="https://github.com/user-attachments/assets/cb5733eb-a1a4-47cd-b796-5a198c0aa6ef" />
+<img width="1907" height="1029" alt="Home1" src="https://github.com/user-attachments/assets/8b561e80-7a07-4a98-815c-a9d4204fc9b5" />
+<img width="1907" height="1027" alt="Home2" src="https://github.com/user-attachments/assets/f7b882ba-413c-42e5-8443-5e8ca5c8abc0" />
+
+
 
 ---
 
+### 📈 Analysing Log Files
+
+<img width="1895" height="1017" alt="Analyzing_logfile" src="https://github.com/user-attachments/assets/59c08719-0fb3-4f14-aa27-9a617cbd1680" />
+
+---
+
+
+
 ### 📊 Analysis Report
 
-<img width="1855" height="877" alt="Analysis report" src="https://github.com/user-attachments/assets/e24de03b-125f-4849-8b11-0f8d5686036b" />
+<img width="1892" height="1037" alt="Dashboard1" src="https://github.com/user-attachments/assets/dc63becb-00fb-4f96-afbf-2b0cc8007e4e" />
+<img width="1907" height="1014" alt="Dashboard2" src="https://github.com/user-attachments/assets/11ec4990-c536-407a-b2d2-4f9a9bc12cb5" />
+<img width="1907" height="1023" alt="Dashboard3" src="https://github.com/user-attachments/assets/e15a0b89-e1a5-420a-9ccf-a5d5947749d2" />
+
 
 ---
 ## 🔐 Security Features
