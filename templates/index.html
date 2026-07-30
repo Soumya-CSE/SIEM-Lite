@@ -847,6 +847,36 @@
     return (bytes/1024/1024).toFixed(2) + ' MB';
   }
 
+  var analysisResult = null;
+  var scanCompleted = false;
+  var API_ENDPOINT = '/analyze';
+
+  function submitFile(file){
+    var formData = new FormData();
+    formData.append('logfile', file);
+
+    return fetch(API_ENDPOINT, {
+      method: 'POST',
+      body: formData
+    })
+    .then(function(response){
+      if(!response.ok){ throw new Error('Upload failed'); }
+      return response.json();
+    })
+    .then(function(json){
+      analysisResult = json;
+      DATA = json;
+      if(scanCompleted && state.hasData){
+        dashboardRendered = false;
+        renderDashboard();
+      }
+    })
+    .catch(function(err){
+      toast('Server error while analyzing file');
+      console.error(err);
+    });
+  }
+
   function handleFile(file){
     if(!isValidLog(file)){
       dropzone.classList.add('is-error');
@@ -854,7 +884,11 @@
       setTimeout(function(){ dropzone.classList.remove('is-error'); }, 1600);
       return;
     }
+    analysisResult = null;
+    scanCompleted = false;
+    dashboardRendered = false;
     startScan(file);
+    submitFile(file);
   }
 
   /* ---------------- SCAN SEQUENCE ---------------- */
@@ -909,10 +943,15 @@
     setTimeout(function(){
       overlay.classList.remove('is-visible');
       state.hasData = true;
+      scanCompleted = true;
       setActiveNav('dashboard');
       showScreen('dashboard');
-      renderDashboard();
-      toast('Scan complete — 23,472 events processed');
+      if(analysisResult){
+        dashboardRendered = false;
+        renderDashboard();
+      } else {
+        toast('Scan complete — waiting for server result');
+      }
     }, total * stepTime + 550);
   }
 
@@ -970,10 +1009,9 @@
   function commas(n){ return n.toLocaleString('en-US'); }
 
   function renderDashboard(){
-    if(dashboardRendered) return;
     dashboardRendered = true;
 
-    animateCounter(document.getElementById('statFailedLogins'), DATA.failedLogins, 1000, commas);
+    animateCounter(document.getElementById('statFailedLogins'), DATA.failedLogins || 0, 1000, commas);
     animateCounter(document.getElementById('statSuspiciousIps'), DATA.suspiciousIps, 900, commas);
     animateCounter(document.getElementById('statCriticalEvents'), DATA.criticalEvents, 900, commas);
     animateCounter(document.getElementById('statTotalEvents'), DATA.totalEvents, 1400, commas);

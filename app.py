@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, jsonify
 import os
 from analyzer import analyze_logs
 app = Flask(__name__)
@@ -22,22 +22,16 @@ def home():
 
 @app.route("/analyze", methods=["POST"])
 def analyze():
+    file = request.files.get("logfile")
+    if not file:
+        return jsonify({"error": "No file uploaded"}), 400
 
-    file = request.files["logfile"]
+    try:
+        result = analyze_logs(file.stream)
+    except Exception:
+        return jsonify({"error": "Unable to parse uploaded log file"}), 400
 
-    path = os.path.join(
-        app.config["UPLOAD_FOLDER"],
-        file.filename
-    )
-    print(path)
-    file.save(path)
-
-    result = analyze_logs(path)
-
-    return render_template(
-        "result.html",
-        data=result
-    )
+    return jsonify(result)
 
 
 if __name__ == "__main__":
