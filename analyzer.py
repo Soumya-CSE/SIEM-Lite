@@ -1,5 +1,43 @@
 ﻿import re
 from collections import Counter
+from datetime import datetime
+
+# Matches a leading "2026-07-28 09:10:15" or "2026-07-28T09:10:15" style timestamp
+TIMESTAMP_RE = re.compile(r"(\d{4}-\d{2}-\d{2}[ T]\d{2}:\d{2}:\d{2})")
+# Fallback: a timestamp wrapped in brackets, e.g. "[28/Jul/2026:09:10:15]"
+BRACKET_RE = re.compile(r"\[(.*?)\]")
+
+TIMESTAMP_FORMATS = ("%Y-%m-%d %H:%M:%S", "%Y-%m-%dT%H:%M:%S")
+
+
+def _parse_timestamp(log):
+    """Best-effort extraction of a real datetime from a single log line."""
+    match = TIMESTAMP_RE.search(log)
+    candidate = match.group(1) if match else None
+
+    if candidate is None:
+        bracket = BRACKET_RE.search(log)
+        if bracket:
+            inner = TIMESTAMP_RE.search(bracket.group(1))
+            candidate = inner.group(1) if inner else None
+
+    if candidate is None:
+        return None
+
+    for fmt in TIMESTAMP_FORMATS:
+        try:
+            return datetime.strptime(candidate.replace("T", " "), fmt.replace("T", " "))
+        except ValueError:
+            continue
+    return None
+
+
+def _format_seen(dt):
+    if dt is None:
+        return "Unknown"
+    if dt.date() == datetime.now().date():
+        return "Today, " + dt.strftime("%I:%M %p").lstrip("0")
+    return dt.strftime("%b %d, %I:%M %p").replace(" 0", " ")
 
 
 def analyze_logs(file):
@@ -33,26 +71,32 @@ def analyze_logs(file):
         "low": 0
     }
 
-    raw_timestamps = []
-    timeline = []
+    hourly_counts = [0] * 24
+    parsed_timestamps = []          # every datetime we could parse, in file order
     event_types = Counter()
     critical_event_rows = []
+    ip_last_seen = {}                # ip -> most recent datetime seen (any event)
+    line_index_for_fallback = 0      # used only if the file has no parsable timestamps at all
 
     for log in logs:
         normalized = log.upper()
-        timestamp = None
+        dt = _parse_timestamp(log)
 
-        time_match = re.search(r"\[(.*?)\]", log)
-        if time_match:
-            timestamp = time_match.group(1)
-            raw_timestamps.append(timestamp)
-            timeline.append(len(raw_timestamps) * 10)
+        if dt is not None:
+            parsed_timestamps.append(dt)
+            hourly_counts[dt.hour] += 1
+        else:
+            # No real timestamp on this line - still make sure it contributes
+            # to the timeline so the chart reflects the whole file.
+            hourly_counts[line_index_for_fallback % 24] += 1
+        line_index_for_fallback += 1
 
         if "CRITICAL" in normalized:
             severity["critical"] += 1
             critical_event_rows.append({
                 "title": log[:72].rstrip(" ."),
-                "time": timestamp or "Unknown"
+                "time": _format_seen(dt),
+                "_dt": dt
             })
 
         if "LOGIN SUCCESS" in normalized:
@@ -81,6 +125,8 @@ def analyze_logs(file):
         if ip_match:
             address = ip_match.group(1)
             ips.append(address)
+            if dt is not None and (address not in ip_last_seen or dt > ip_last_seen[address]):
+                ip_last_seen[address] = dt
             if "LOGIN FAILED" in normalized:
                 failed_ips.append(address)
 
@@ -92,8 +138,6 @@ def analyze_logs(file):
             "attempts": count,
             "level": level
         })
-        if count >= 3:
-            severity["high"] += 1
 
     suspicious_ip_rows = []
     for ip, count in Counter(failed_ips).items():
@@ -105,8 +149,19 @@ def analyze_logs(file):
             "country": "Unknown",
             "risk": risk,
             "events": count,
-            "seen": timeline[-1] if timeline else "Recent"
+            "seen": _format_seen(ip_last_seen.get(ip))
         })
+        # A brute-force pattern (3+ failed attempts from one IP) is a real
+        # critical event, even if the log never literally says "CRITICAL".
+        if count >= 3:
+            severity["critical"] += 1
+            critical_event_rows.append({
+                "title": "Possible brute-force attack from " + ip + " (" + str(count) + " failed attempts)",
+                "time": _format_seen(ip_last_seen.get(ip)),
+                "_dt": ip_last_seen.get(ip)
+            })
+        elif count == 2:
+            severity["high"] += 1
 
     if not suspicious_ip_rows and ips:
         suspicious_ip_rows.append({
@@ -114,25 +169,32 @@ def analyze_logs(file):
             "country": "Unknown",
             "risk": "low",
             "events": 1,
-            "seen": timeline[-1] if timeline else "Recent"
+            "seen": _format_seen(ip_last_seen.get(ips[0]))
         })
 
     if not critical_event_rows and failed > 0:
         critical_event_rows.append({
             "title": "Multiple failed login attempts detected",
-            "time": timeline[-1] if timeline else "Unknown"
+            "time": _format_seen(parsed_timestamps[-1] if parsed_timestamps else None),
+            "_dt": parsed_timestamps[-1] if parsed_timestamps else None
         })
+
+    # Most recent events first; entries without a timestamp sort last.
+    critical_event_rows.sort(key=lambda r: r.get("_dt") or datetime.min, reverse=True)
+    for row in critical_event_rows:
+        row.pop("_dt", None)
+    critical_event_rows = critical_event_rows[:8]
 
     total_events = len(logs)
     threat_score = 0
     if failed > 0:
-        threat_score += 30
+        threat_score += 25
     if len(suspicious_users) > 0:
-        threat_score += 30
+        threat_score += 25
     if len(suspicious_ip_rows) > 0:
-        threat_score += 30
+        threat_score += 25
     if severity["critical"] > 0:
-        threat_score += 10
+        threat_score += 25
     threat_score = min(threat_score, 100)
 
     severity_list = [
@@ -156,7 +218,7 @@ def analyze_logs(file):
         "suspicious_ips": suspicious_ip_rows,
         "alerts": suspicious_users,
         "severity": severity_list,
-        "timeline": timeline,
+        "timeline": hourly_counts,
         "threatScore": threat_score,
         "failedLogins": failed,
         "suspiciousIps": len(suspicious_ip_rows),
