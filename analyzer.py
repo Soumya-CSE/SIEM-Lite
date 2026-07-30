@@ -77,7 +77,7 @@ def analyze_logs(file):
             if "LOGIN FAILED" in normalized:
                 failed_users.append(username)
 
-        ip_match = re.search(r"IP:\s([\d.]+)", log)
+        ip_match = re.search(r"IP:?\s*([\d.]+)", log)
         if ip_match:
             address = ip_match.group(1)
             ips.append(address)
