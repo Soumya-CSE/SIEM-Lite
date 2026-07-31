@@ -668,7 +668,7 @@
                 </svg>
                 <div class="score-ring__value"><span id="scoreValue">0</span>%</div>
               </div>
-              <div><span class="risk-badge high" id="riskBadge">High Risk</span></div>
+              <div><span class="risk-badge" id="riskBadge">—</span></div>
             </div>
           </div>
 
@@ -678,7 +678,7 @@
               <div class="stat-card__icon"><svg class="icon"><use href="#i-lock"/></svg></div>
             </div>
             <div class="stat-card__value" id="statFailedLogins">0</div>
-            <div class="stat-card__delta delta-up-bad">↑ 28% vs last scan</div>
+            <div class="stat-card__delta delta-flat" id="deltaFailedLogins">—</div>
           </div>
 
           <div class="card stat-card">
@@ -687,7 +687,7 @@
               <div class="stat-card__icon"><svg class="icon"><use href="#i-wifi"/></svg></div>
             </div>
             <div class="stat-card__value" id="statSuspiciousIps">0</div>
-            <div class="stat-card__delta delta-up-bad">↑ 3 vs last scan</div>
+            <div class="stat-card__delta delta-flat" id="deltaSuspiciousIps">—</div>
           </div>
 
           <div class="card stat-card">
@@ -696,7 +696,7 @@
               <div class="stat-card__icon"><svg class="icon"><use href="#i-alert"/></svg></div>
             </div>
             <div class="stat-card__value" id="statCriticalEvents">0</div>
-            <div class="stat-card__delta delta-down-good">↓ 2 vs last scan</div>
+            <div class="stat-card__delta delta-flat" id="deltaCriticalEvents">—</div>
           </div>
 
           <div class="card stat-card">
@@ -718,7 +718,7 @@
                   <circle cx="66" cy="66" r="50" fill="none" stroke="var(--bg-panel-raised)" stroke-width="20"/>
                 </svg>
                 <div class="donut__center">
-                  <div class="donut__center-val">23,472</div>
+                  <div class="donut__center-val" id="donutCenterVal">0</div>
                   <div class="donut__center-lbl">Total</div>
                 </div>
               </div>
@@ -1211,6 +1211,41 @@
   }
   function commas(n){ return n.toLocaleString('en-US'); }
 
+  function riskLabelFor(score){
+    if(score >= 80) return { text:'Critical Risk', cls:'critical' };
+    if(score >= 50) return { text:'High Risk', cls:'high' };
+    if(score >= 25) return { text:'Medium Risk', cls:'medium' };
+    return { text:'Low Risk', cls:'low' };
+  }
+
+  function renderDelta(elId, current, previous, mode){
+    var el = document.getElementById(elId);
+    if(previous === null || previous === undefined){
+      el.className = 'stat-card__delta delta-flat';
+      el.textContent = 'No prior scan to compare';
+      return;
+    }
+    var diff = current - previous;
+    if(diff === 0){
+      el.className = 'stat-card__delta delta-flat';
+      el.textContent = 'No change vs last scan';
+      return;
+    }
+    var up = diff > 0;
+    el.className = 'stat-card__delta ' + (up ? 'delta-up-bad' : 'delta-down-good');
+    var arrow = up ? '↑ ' : '↓ ';
+    if(mode === 'percent'){
+      if(previous === 0){
+        el.textContent = arrow + Math.abs(diff) + ' new vs last scan';
+      } else {
+        var pct = Math.round((diff / previous) * 100);
+        el.textContent = arrow + Math.abs(pct) + '% vs last scan';
+      }
+    } else {
+      el.textContent = arrow + Math.abs(diff) + ' vs last scan';
+    }
+  }
+
   function renderDashboard(){
     dashboardRendered = true;
 
@@ -1219,6 +1254,17 @@
     animateCounter(document.getElementById('statCriticalEvents'), DATA.criticalEvents, 900, commas);
     animateCounter(document.getElementById('statTotalEvents'), DATA.totalEvents, 1400, commas);
     animateCounter(document.getElementById('scoreValue'), DATA.threatScore, 1200, function(n){ return n; });
+    document.getElementById('donutCenterVal').textContent = commas(DATA.totalEvents || 0);
+
+    var risk = riskLabelFor(DATA.threatScore || 0);
+    var riskBadge = document.getElementById('riskBadge');
+    riskBadge.className = 'risk-badge ' + risk.cls;
+    riskBadge.textContent = risk.text;
+
+    var prev = DATA.previousScan || null;
+    renderDelta('deltaFailedLogins', DATA.failedLogins || 0, prev ? prev.failedLogins : null, 'percent');
+    renderDelta('deltaSuspiciousIps', DATA.suspiciousIps || 0, prev ? prev.suspiciousIps : null, 'absolute');
+    renderDelta('deltaCriticalEvents', DATA.criticalEvents || 0, prev ? prev.criticalEvents : null, 'absolute');
 
     // threat score ring (progress-ring technique)
     var ring = document.getElementById('scoreRing');
@@ -1370,7 +1416,7 @@
     lines.push('SIEM LITE — ANALYSIS REPORT');
     lines.push('Generated: ' + new Date().toString());
     lines.push('');
-    lines.push('Threat Score: ' + DATA.threatScore + '% (High Risk)');
+    lines.push('Threat Score: ' + DATA.threatScore + '% (' + riskLabelFor(DATA.threatScore || 0).text + ')');
     lines.push('Failed Logins: ' + DATA.failedLogins);
     lines.push('Suspicious IPs: ' + DATA.suspiciousIps);
     lines.push('Critical Events: ' + DATA.criticalEvents);
