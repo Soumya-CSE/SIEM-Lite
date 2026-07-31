@@ -365,13 +365,99 @@
   .event-item__title{font-size:12.5px;color:var(--text-0);font-weight:600;}
   .event-item__time{font-size:11px;color:var(--text-3);font-family:var(--font-mono);margin-top:2px;}
 
-  /* ============ PLACEHOLDER SCREEN ============ */
-  .placeholder{max-width:460px;margin:10vh auto 0;text-align:center;}
-  .placeholder__icon{width:64px;height:64px;margin:0 auto 20px;border-radius:16px;background:var(--accent-dim);border:1px solid var(--border-med);display:flex;align-items:center;justify-content:center;color:var(--accent-2);}
-  .placeholder__icon svg{width:28px;height:28px;}
-  .placeholder h2{font-size:20px;margin-bottom:8px;}
-  .placeholder p{font-size:13.5px;color:var(--text-2);line-height:1.6;}
-  .placeholder .btn{margin-top:22px;}
+  /* ============ SECTION HEAD (History / Alerts / Settings / About) ============ */
+  .section-head{display:flex;align-items:flex-start;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-bottom:24px;}
+  .section-head h1{font-size:24px;letter-spacing:.02em;}
+  .section-head__sub{font-size:13.5px;color:var(--text-2);margin-top:6px;}
+  .section-head__actions{display:flex;gap:10px;}
+
+  /* ---------- empty / loading state ---------- */
+  .empty-state{max-width:420px;margin:8vh auto 0;text-align:center;}
+  .empty-state__icon{width:60px;height:60px;margin:0 auto 18px;border-radius:16px;background:var(--accent-dim);border:1px solid var(--border-med);display:flex;align-items:center;justify-content:center;color:var(--accent-2);}
+  .empty-state__icon svg{width:26px;height:26px;}
+  .empty-state h3{font-size:17px;margin-bottom:8px;}
+  .empty-state p{font-size:13px;color:var(--text-2);line-height:1.6;}
+  .loading-row{text-align:center;padding:40px 0;color:var(--text-3);font-size:13px;}
+
+  /* ---------- history ---------- */
+  .history-list{display:flex;flex-direction:column;gap:10px;}
+  .history-row{
+    display:flex;align-items:center;gap:16px;padding:15px 18px;border-radius:14px;
+    background:var(--bg-panel);border:1px solid var(--border-soft);cursor:pointer;
+    transition:border-color .2s var(--ease), transform .2s var(--ease), background .2s var(--ease);
+  }
+  .history-row:hover{border-color:var(--border-med);background:var(--bg-panel-hover);transform:translateX(2px);}
+  .history-row__score{
+    width:44px;height:44px;border-radius:12px;flex-shrink:0;display:flex;align-items:center;justify-content:center;
+    font-family:var(--font-display);font-weight:700;font-size:13.5px;color:#04121b;
+  }
+  .history-row__body{flex:1;min-width:0;}
+  .history-row__file{font-size:13.5px;color:var(--text-0);font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .history-row__meta{font-size:11.5px;color:var(--text-3);font-family:var(--font-mono);margin-top:3px;}
+  .history-row__stats{display:flex;gap:18px;flex-shrink:0;}
+  .history-row__stat{text-align:center;min-width:44px;}
+  .history-row__stat-val{font-family:var(--font-mono);font-size:13px;color:var(--text-1);}
+  .history-row__stat-lbl{font-size:9.5px;color:var(--text-3);text-transform:uppercase;letter-spacing:.06em;margin-top:2px;}
+
+  /* ---------- alerts ---------- */
+  .alerts-list{display:flex;flex-direction:column;gap:12px;}
+  .alert-card{
+    display:flex;gap:14px;align-items:flex-start;padding:16px 18px;border-radius:14px;
+    background:var(--bg-panel);border:1px solid var(--border-soft);border-left-width:3px;
+  }
+  .alert-card.critical{border-left-color:var(--critical);}
+  .alert-card.high{border-left-color:var(--high);}
+  .alert-card__icon{width:34px;height:34px;border-radius:10px;flex-shrink:0;display:flex;align-items:center;justify-content:center;}
+  .alert-card.critical .alert-card__icon{background:var(--critical-dim);color:var(--critical);}
+  .alert-card.high .alert-card__icon{background:var(--high-dim);color:var(--high);}
+  .alert-card__icon svg{width:16px;height:16px;}
+  .alert-card__body{flex:1;min-width:0;}
+  .alert-card__title{font-size:13.5px;color:var(--text-0);font-weight:600;}
+  .alert-card__meta{font-size:11.5px;color:var(--text-3);margin-top:4px;font-family:var(--font-mono);}
+  .alert-card__actions{flex-shrink:0;}
+
+  /* ---------- settings ---------- */
+  .form-row{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:20px;}
+  .form-field{display:flex;flex-direction:column;gap:7px;}
+  .form-field--full{grid-column:1 / -1;}
+  .form-field label{font-size:12px;font-weight:600;color:var(--text-1);}
+  .form-field__hint{font-size:11px;color:var(--text-3);line-height:1.5;}
+  .form-input{
+    background:var(--bg-panel-raised);border:1px solid var(--border-soft);border-radius:9px;
+    padding:10px 13px;color:var(--text-0);font-size:13px;font-family:var(--font-body);width:100%;
+    transition:border-color .18s var(--ease);
+  }
+  .form-input:focus{outline:none;border-color:var(--border-strong);}
+  .toggle-row{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:16px 0;border-top:1px solid var(--border-soft);}
+  .toggle-row__label{font-size:13px;color:var(--text-0);font-weight:600;}
+  .toggle-row__hint{font-size:11.5px;color:var(--text-3);margin-top:2px;}
+  .switch{position:relative;width:42px;height:24px;flex-shrink:0;display:inline-block;}
+  .switch input{opacity:0;width:0;height:0;position:absolute;}
+  .switch__track{position:absolute;inset:0;background:var(--bg-panel-raised);border:1px solid var(--border-med);border-radius:20px;cursor:pointer;transition:background .2s var(--ease);}
+  .switch__track::before{content:'';position:absolute;width:16px;height:16px;left:2px;top:2px;background:var(--text-2);border-radius:50%;transition:all .2s var(--ease);}
+  .switch input:checked + .switch__track{background:var(--accent-dim);border-color:var(--border-strong);}
+  .switch input:checked + .switch__track::before{transform:translateX(18px);background:var(--accent);box-shadow:0 0 8px var(--accent-glow);}
+  .settings-actions{display:flex;gap:10px;margin-top:22px;}
+  .settings-saved-hint{font-size:11.5px;color:var(--text-3);margin-top:12px;font-family:var(--font-mono);}
+
+  /* ---------- about ---------- */
+  .about-hero{text-align:center;max-width:580px;margin:0 auto 30px;}
+  .about-hero__badge{width:56px;height:56px;margin:0 auto 16px;border-radius:15px;background:var(--accent-dim);border:1px solid var(--border-med);display:flex;align-items:center;justify-content:center;color:var(--accent-2);}
+  .about-hero__badge svg{width:26px;height:26px;}
+  .about-hero h2{font-size:22px;margin-bottom:8px;}
+  .about-hero p{font-size:13.5px;color:var(--text-2);line-height:1.65;}
+  .about-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;max-width:640px;margin:0 auto 28px;}
+  .about-stat{padding:18px;border-radius:14px;background:var(--bg-panel);border:1px solid var(--border-soft);text-align:center;}
+  .about-stat__val{font-family:var(--font-display);font-size:22px;font-weight:700;color:var(--text-0);}
+  .about-stat__lbl{font-size:10.5px;color:var(--text-3);text-transform:uppercase;letter-spacing:.06em;margin-top:4px;}
+  .about-card{max-width:640px;margin:0 auto;}
+  .about-features{display:flex;flex-direction:column;gap:2px;}
+  .about-feature{display:flex;gap:12px;align-items:flex-start;padding:13px 4px;border-bottom:1px solid var(--border-soft);}
+  .about-feature:last-child{border-bottom:none;}
+  .about-feature__icon{width:30px;height:30px;border-radius:9px;flex-shrink:0;display:flex;align-items:center;justify-content:center;background:var(--accent-dim);color:var(--accent-2);}
+  .about-feature__icon svg{width:14px;height:14px;}
+  .about-feature__title{font-size:12.5px;color:var(--text-0);font-weight:600;}
+  .about-feature__desc{font-size:11.5px;color:var(--text-3);margin-top:2px;line-height:1.5;}
 
   /* ============ TOAST ============ */
   .toast-stack{position:fixed;bottom:24px;right:24px;z-index:200;display:flex;flex-direction:column;gap:10px;align-items:flex-end;}
@@ -432,6 +518,11 @@
     .dropzone{padding:40px 18px;}
     .features{grid-template-columns:1fr 1fr;}
     .dash-head{flex-direction:column;}
+    .section-head{flex-direction:column;}
+    .form-row{grid-template-columns:1fr;}
+    .about-stats{grid-template-columns:1fr;}
+    .history-row{flex-wrap:wrap;}
+    .history-row__stats{width:100%;justify-content:space-between;}
   }
   @media (max-width:460px){
     .stat-grid{grid-template-columns:1fr;}
@@ -550,7 +641,7 @@
         <div class="dash-head">
           <div>
             <h1>Analysis Dashboard</h1>
-            <div class="dash-head__sub">Overview of your log file analysis</div>
+            <div class="dash-head__sub" id="dashHeadSub">Overview of your log file analysis</div>
           </div>
           <div class="dash-head__actions">
             <button class="btn btn-ghost" id="newScanBtn" type="button"><svg class="icon" style="width:14px;height:14px;"><use href="#i-refresh"/></svg>New Scan</button>
@@ -672,13 +763,131 @@
         </div>
       </section>
 
-      <!-- ============ PLACEHOLDER SCREEN (History / Alerts / Settings / About) ============ -->
-      <section class="screen" id="screen-placeholder">
-        <div class="placeholder">
-          <div class="placeholder__icon"><svg class="icon" id="placeholderIcon"><use href="#i-info"/></svg></div>
-          <h2 id="placeholderTitle">Coming Soon</h2>
-          <p id="placeholderDesc">This section is still being wired up.</p>
-          <button class="btn btn-ghost" id="placeholderBack" type="button">Back to Dashboard</button>
+      <!-- ============ ANALYSIS HISTORY SCREEN ============ -->
+      <section class="screen" id="screen-history">
+        <div class="section-head">
+          <div>
+            <h1>Analysis History</h1>
+            <div class="section-head__sub">Every scan you've run, most recent first — click one to reopen it</div>
+          </div>
+          <div class="section-head__actions">
+            <button class="btn btn-ghost" id="clearHistoryBtn" type="button">
+              <svg class="icon" style="width:14px;height:14px;"><use href="#i-ban"/></svg>Clear All
+            </button>
+          </div>
+        </div>
+        <div id="historyContent"><div class="loading-row">Loading history…</div></div>
+      </section>
+
+      <!-- ============ ALERTS SCREEN ============ -->
+      <section class="screen" id="screen-alerts">
+        <div class="section-head">
+          <div>
+            <h1>Alerts</h1>
+            <div class="section-head__sub">Critical events and repeat-offender accounts pulled from your recent scans</div>
+          </div>
+          <div class="section-head__actions">
+            <button class="btn btn-ghost" id="refreshAlertsBtn" type="button">
+              <svg class="icon" style="width:14px;height:14px;"><use href="#i-refresh"/></svg>Refresh
+            </button>
+          </div>
+        </div>
+        <div id="alertsContent"><div class="loading-row">Loading alerts…</div></div>
+      </section>
+
+      <!-- ============ SETTINGS SCREEN ============ -->
+      <section class="screen" id="screen-settings">
+        <div class="section-head">
+          <div>
+            <h1>Settings</h1>
+            <div class="section-head__sub">Tune how SIEM Lite scores risk and manages your scan history</div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card__head"><span class="card__title">Risk Thresholds</span></div>
+          <div class="form-row">
+            <div class="form-field">
+              <label for="highThresholdInput">High-risk failed-login threshold</label>
+              <input class="form-input" type="number" id="highThresholdInput" min="2" max="50" step="1">
+              <span class="form-field__hint">An IP hitting this many failed logins (or more) is flagged High risk and logged as a critical brute-force alert.</span>
+            </div>
+            <div class="form-field">
+              <label for="mediumThresholdInput">Medium-risk failed-login threshold</label>
+              <input class="form-input" type="number" id="mediumThresholdInput" min="1" max="49" step="1">
+              <span class="form-field__hint">Fewer failed logins than this are treated as Low risk. Must be lower than the High-risk threshold.</span>
+            </div>
+            <div class="form-field">
+              <label for="retentionInput">Scan history to keep</label>
+              <input class="form-input" type="number" id="retentionInput" min="1" max="500" step="1">
+              <span class="form-field__hint">Older scans beyond this count are pruned automatically after every upload.</span>
+            </div>
+            <div class="form-field">
+              <label for="alertEmailInput">Alert notification email <span style="color:var(--text-3);font-weight:400;">(optional)</span></label>
+              <input class="form-input" type="email" id="alertEmailInput" placeholder="you@company.com">
+              <span class="form-field__hint">Stored for future alerting — email delivery isn't wired up yet.</span>
+            </div>
+          </div>
+
+          <div class="toggle-row">
+            <div>
+              <div class="toggle-row__label">Enable alert generation</div>
+              <div class="toggle-row__hint">Turn off to stop surfacing new items on the Alerts page.</div>
+            </div>
+            <label class="switch">
+              <input type="checkbox" id="alertsEnabledInput">
+              <span class="switch__track"></span>
+            </label>
+          </div>
+
+          <div class="settings-actions">
+            <button class="btn btn-primary" id="saveSettingsBtn" type="button">
+              <svg class="icon" style="width:14px;height:14px;stroke:#01131d;"><use href="#i-check"/></svg>Save Settings
+            </button>
+            <button class="btn btn-ghost" id="resetSettingsBtn" type="button">Reset to Defaults</button>
+          </div>
+          <div class="settings-saved-hint" id="settingsSavedHint"></div>
+        </div>
+      </section>
+
+      <!-- ============ ABOUT SCREEN ============ -->
+      <section class="screen" id="screen-about">
+        <div class="about-hero">
+          <div class="about-hero__badge"><svg class="icon"><use href="#i-shield"/></svg></div>
+          <h2>SIEM <span style="color:var(--accent);">LITE</span> <span style="color:var(--text-3);font-size:15px;">v1.0</span></h2>
+          <p>A lightweight log analyzer that turns raw authentication logs into a readable security picture — failed logins, suspicious IPs, brute-force attempts and a composite threat score, in seconds.</p>
+        </div>
+
+        <div class="about-stats" id="aboutStats">
+          <div class="about-stat"><div class="about-stat__val">—</div><div class="about-stat__lbl">Scans Run</div></div>
+          <div class="about-stat"><div class="about-stat__val">—</div><div class="about-stat__lbl">Events Processed</div></div>
+          <div class="about-stat"><div class="about-stat__val">—</div><div class="about-stat__lbl">Server Uptime</div></div>
+        </div>
+
+        <div class="card about-card">
+          <div class="card__head"><span class="card__title">What it does</span></div>
+          <div class="about-features">
+            <div class="about-feature">
+              <div class="about-feature__icon"><svg class="icon"><use href="#i-lock"/></svg></div>
+              <div><div class="about-feature__title">Login analysis</div><div class="about-feature__desc">Tallies successful and failed logins per user and flags accounts under repeated attack.</div></div>
+            </div>
+            <div class="about-feature">
+              <div class="about-feature__icon"><svg class="icon"><use href="#i-wifi"/></svg></div>
+              <div><div class="about-feature__title">Suspicious IP detection</div><div class="about-feature__desc">Groups failed attempts by source IP and scores each one Low, Medium or High risk.</div></div>
+            </div>
+            <div class="about-feature">
+              <div class="about-feature__icon"><svg class="icon"><use href="#i-alert"/></svg></div>
+              <div><div class="about-feature__title">Critical &amp; brute-force detection</div><div class="about-feature__desc">Surfaces explicit CRITICAL log lines plus inferred brute-force patterns as alerts.</div></div>
+            </div>
+            <div class="about-feature">
+              <div class="about-feature__icon"><svg class="icon"><use href="#i-activity"/></svg></div>
+              <div><div class="about-feature__title">Threat scoring &amp; timeline</div><div class="about-feature__desc">Combines every signal into a single 0–100 score and an hourly event timeline.</div></div>
+            </div>
+            <div class="about-feature">
+              <div class="about-feature__icon"><svg class="icon"><use href="#i-history"/></svg></div>
+              <div><div class="about-feature__title">Persistent history</div><div class="about-feature__desc">Every scan is saved so you can revisit past reports from the History tab.</div></div>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -722,14 +931,10 @@
   var screens = {
     home: document.getElementById('screen-home'),
     dashboard: document.getElementById('screen-dashboard'),
-    placeholder: document.getElementById('screen-placeholder')
-  };
-
-  var placeholderCopy = {
-    history: { title:'Analysis History', desc:'Every scan you run will show up here with its risk score and a link back to the full report.', icon:'#i-history' },
-    alerts: { title:'Alerts', desc:'Real-time alerting for critical events is on the roadmap — you\u2019ll be notified the moment a high-risk pattern is found.', icon:'#i-bell' },
-    settings: { title:'Settings', desc:'Scan thresholds, notification rules and integrations will live here.', icon:'#i-gear' },
-    about: { title:'About SIEM Lite', desc:'SIEM Lite is a lightweight log analyzer that surfaces failed logins, suspicious IPs and critical events from your raw log files in seconds.', icon:'#i-info' }
+    history: document.getElementById('screen-history'),
+    alerts: document.getElementById('screen-alerts'),
+    settings: document.getElementById('screen-settings'),
+    about: document.getElementById('screen-about')
   };
 
   function setActiveNav(key){
@@ -756,15 +961,10 @@
       showScreen('home');
       return;
     }
-    // placeholder sections
-    setActiveNav(navKey);
-    var copy = placeholderCopy[navKey];
-    if(copy){
-      document.getElementById('placeholderTitle').textContent = copy.title;
-      document.getElementById('placeholderDesc').textContent = copy.desc;
-      document.getElementById('placeholderIcon').innerHTML = '<use href="'+copy.icon+'"/>';
-    }
-    showScreen('placeholder');
+    if(navKey === 'history'){ setActiveNav('history'); showScreen('history'); loadHistory(); return; }
+    if(navKey === 'alerts'){ setActiveNav('alerts'); showScreen('alerts'); loadAlerts(); return; }
+    if(navKey === 'settings'){ setActiveNav('settings'); showScreen('settings'); loadSettings(); return; }
+    if(navKey === 'about'){ setActiveNav('about'); showScreen('about'); loadAbout(); return; }
   }
 
   navItems.forEach(function(item){
@@ -774,10 +974,11 @@
     });
   });
 
-  document.getElementById('placeholderBack').addEventListener('click', function(){ goTo('dashboard'); });
   document.getElementById('newScanBtn').addEventListener('click', function(){
     state.hasData = false;
     document.getElementById('fileInput').value = '';
+    var sub = document.getElementById('dashHeadSub');
+    if(sub) sub.textContent = 'Overview of your log file analysis';
     goTo('upload');
   });
 
@@ -866,6 +1067,8 @@
     .then(function(json){
       analysisResult = json;
       DATA = json;
+      var sub = document.getElementById('dashHeadSub');
+      if(sub) sub.textContent = 'Overview of your log file analysis';
       if(scanCompleted && state.hasData){
         dashboardRendered = false;
         renderDashboard();
@@ -1192,6 +1395,229 @@
     URL.revokeObjectURL(url);
     toast('Report downloaded');
   });
+
+  /* ================= SHARED API + FORMAT HELPERS ================= */
+  function apiGet(url){
+    return fetch(url).then(function(r){
+      if(!r.ok) throw new Error('Request failed');
+      return r.json();
+    });
+  }
+  function apiPost(url, body){
+    return fetch(url, {
+      method:'POST',
+      headers:{ 'Content-Type':'application/json' },
+      body: JSON.stringify(body || {})
+    }).then(function(r){
+      return r.json().then(function(json){
+        if(!r.ok) throw new Error(json.error || 'Request failed');
+        return json;
+      });
+    });
+  }
+  function apiDelete(url){
+    return fetch(url, { method:'DELETE' }).then(function(r){
+      return r.json().then(function(json){
+        if(!r.ok) throw new Error(json.error || 'Request failed');
+        return json;
+      });
+    });
+  }
+  function formatDateTime(iso){
+    if(!iso) return '—';
+    var d = new Date(iso);
+    if(isNaN(d.getTime())) return iso;
+    return d.toLocaleString('en-US', { month:'short', day:'numeric', hour:'numeric', minute:'2-digit' });
+  }
+  function scoreGradient(score){
+    if(score >= 70) return 'linear-gradient(135deg,#ff9d42,#fb4a5b)';
+    if(score >= 40) return 'linear-gradient(135deg,#ffd23f,#ff9d42)';
+    return 'linear-gradient(135deg,#4a8dff,#33d996)';
+  }
+
+  /* ================= ANALYSIS HISTORY ================= */
+  var historyContent = document.getElementById('historyContent');
+
+  function loadHistory(){
+    historyContent.innerHTML = '<div class="loading-row">Loading history…</div>';
+    apiGet('/api/history').then(renderHistory).catch(function(){
+      historyContent.innerHTML = '<div class="loading-row">Couldn\u2019t load history — is the server running?</div>';
+    });
+  }
+
+  function renderHistory(items){
+    if(!items || !items.length){
+      historyContent.innerHTML =
+        '<div class="empty-state">' +
+          '<div class="empty-state__icon"><svg class="icon"><use href="#i-history"/></svg></div>' +
+          '<h3>No scans yet</h3>' +
+          '<p>Upload a log file from the Dashboard and it\u2019ll show up here automatically.</p>' +
+        '</div>';
+      return;
+    }
+    var list = document.createElement('div');
+    list.className = 'history-list';
+    items.forEach(function(item){
+      var row = document.createElement('div');
+      row.className = 'history-row';
+      row.innerHTML =
+        '<div class="history-row__score" style="background:'+scoreGradient(item.threatScore)+'">'+item.threatScore+'</div>' +
+        '<div class="history-row__body">' +
+          '<div class="history-row__file">'+item.filename+'</div>' +
+          '<div class="history-row__meta">'+formatDateTime(item.uploadedAt)+'</div>' +
+        '</div>' +
+        '<div class="history-row__stats">' +
+          '<div class="history-row__stat"><div class="history-row__stat-val">'+item.failedLogins+'</div><div class="history-row__stat-lbl">Failed</div></div>' +
+          '<div class="history-row__stat"><div class="history-row__stat-val">'+item.suspiciousIps+'</div><div class="history-row__stat-lbl">IPs</div></div>' +
+          '<div class="history-row__stat"><div class="history-row__stat-val">'+item.criticalEvents+'</div><div class="history-row__stat-lbl">Critical</div></div>' +
+        '</div>' +
+        '<div class="icon-btn danger" title="Delete this scan" data-id="'+item.id+'"><svg class="icon"><use href="#i-ban"/></svg></div>';
+      row.addEventListener('click', function(e){
+        if(e.target.closest('.icon-btn')) return;
+        openHistoryScan(item.id);
+      });
+      row.querySelector('.icon-btn').addEventListener('click', function(e){
+        e.stopPropagation();
+        deleteHistoryScan(item.id);
+      });
+      list.appendChild(row);
+    });
+    historyContent.innerHTML = '';
+    historyContent.appendChild(list);
+  }
+
+  function openHistoryScan(id){
+    apiGet('/api/history/' + id).then(function(record){
+      DATA = record;
+      dashboardRendered = false;
+      state.hasData = true;
+      renderDashboard();
+      var sub = document.getElementById('dashHeadSub');
+      if(sub) sub.textContent = 'Viewing archived scan — ' + record.filename + ' · ' + formatDateTime(record.uploadedAt);
+      setActiveNav('dashboard');
+      showScreen('dashboard');
+    }).catch(function(){ toast('Couldn\u2019t load that scan'); });
+  }
+
+  function deleteHistoryScan(id){
+    apiDelete('/api/history/' + id).then(function(){
+      toast('Scan removed');
+      loadHistory();
+    }).catch(function(){ toast('Couldn\u2019t delete that scan'); });
+  }
+
+  document.getElementById('clearHistoryBtn').addEventListener('click', function(){
+    apiDelete('/api/history').then(function(){
+      toast('History cleared');
+      loadHistory();
+    }).catch(function(){ toast('Couldn\u2019t clear history'); });
+  });
+
+  /* ================= ALERTS ================= */
+  var alertsContent = document.getElementById('alertsContent');
+
+  function loadAlerts(){
+    alertsContent.innerHTML = '<div class="loading-row">Loading alerts…</div>';
+    apiGet('/api/alerts').then(renderAlerts).catch(function(){
+      alertsContent.innerHTML = '<div class="loading-row">Couldn\u2019t load alerts — is the server running?</div>';
+    });
+  }
+
+  function renderAlerts(items){
+    if(!items || !items.length){
+      alertsContent.innerHTML =
+        '<div class="empty-state">' +
+          '<div class="empty-state__icon"><svg class="icon"><use href="#i-bell"/></svg></div>' +
+          '<h3>All clear</h3>' +
+          '<p>No unacknowledged critical events or repeat-offender accounts from your recent scans.</p>' +
+        '</div>';
+      return;
+    }
+    var list = document.createElement('div');
+    list.className = 'alerts-list';
+    items.forEach(function(item){
+      var card = document.createElement('div');
+      card.className = 'alert-card ' + item.severity;
+      card.innerHTML =
+        '<div class="alert-card__icon"><svg class="icon"><use href="#i-alert"/></svg></div>' +
+        '<div class="alert-card__body">' +
+          '<div class="alert-card__title">'+item.title+'</div>' +
+          '<div class="alert-card__meta">'+item.sourceFile+' · '+(item.time && item.time.indexOf('T') > -1 ? formatDateTime(item.time) : item.time)+'</div>' +
+        '</div>' +
+        '<div class="alert-card__actions"><button class="btn btn-ghost" style="padding:8px 14px;font-size:12px;" data-key="'+item.key+'">Acknowledge</button></div>';
+      card.querySelector('button').addEventListener('click', function(){ ackAlert(item.key); });
+      list.appendChild(card);
+    });
+    alertsContent.innerHTML = '';
+    alertsContent.appendChild(list);
+  }
+
+  function ackAlert(key){
+    apiPost('/api/alerts/ack', { key: key }).then(function(){
+      loadAlerts();
+    }).catch(function(){ toast('Couldn\u2019t acknowledge that alert'); });
+  }
+
+  document.getElementById('refreshAlertsBtn').addEventListener('click', loadAlerts);
+
+  /* ================= SETTINGS ================= */
+  var DEFAULT_SETTINGS_CLIENT = {
+    high_risk_threshold: 3,
+    medium_risk_threshold: 2,
+    history_retention: 25,
+    alerts_enabled: true,
+    alert_email: ''
+  };
+
+  function fillSettingsForm(s){
+    document.getElementById('highThresholdInput').value = s.high_risk_threshold;
+    document.getElementById('mediumThresholdInput').value = s.medium_risk_threshold;
+    document.getElementById('retentionInput').value = s.history_retention;
+    document.getElementById('alertEmailInput').value = s.alert_email || '';
+    document.getElementById('alertsEnabledInput').checked = !!s.alerts_enabled;
+  }
+
+  function loadSettings(){
+    document.getElementById('settingsSavedHint').textContent = '';
+    apiGet('/api/settings').then(fillSettingsForm).catch(function(){
+      toast('Couldn\u2019t load settings — is the server running?');
+    });
+  }
+
+  document.getElementById('saveSettingsBtn').addEventListener('click', function(){
+    var payload = {
+      high_risk_threshold: parseInt(document.getElementById('highThresholdInput').value, 10),
+      medium_risk_threshold: parseInt(document.getElementById('mediumThresholdInput').value, 10),
+      history_retention: parseInt(document.getElementById('retentionInput').value, 10),
+      alert_email: document.getElementById('alertEmailInput').value,
+      alerts_enabled: document.getElementById('alertsEnabledInput').checked
+    };
+    apiPost('/api/settings', payload).then(function(s){
+      fillSettingsForm(s);
+      toast('Settings saved');
+      document.getElementById('settingsSavedHint').textContent = 'Applies to every scan from now on.';
+    }).catch(function(err){
+      toast(err.message || 'Couldn\u2019t save settings');
+    });
+  });
+
+  document.getElementById('resetSettingsBtn').addEventListener('click', function(){
+    fillSettingsForm(DEFAULT_SETTINGS_CLIENT);
+    document.getElementById('settingsSavedHint').textContent = 'Defaults loaded — click Save Settings to apply.';
+  });
+
+  /* ================= ABOUT ================= */
+  function loadAbout(){
+    apiGet('/api/about').then(function(stats){
+      var startedMs = new Date(stats.startedAt).getTime();
+      var uptimeMin = Math.max(0, Math.round((Date.now() - startedMs) / 60000));
+      var uptimeLabel = uptimeMin < 60 ? (uptimeMin + 'm') : (Math.floor(uptimeMin/60) + 'h ' + (uptimeMin%60) + 'm');
+      var els = document.querySelectorAll('#aboutStats .about-stat__val');
+      els[0].textContent = stats.totalScans;
+      els[1].textContent = stats.totalEventsProcessed.toLocaleString('en-US');
+      els[2].textContent = uptimeLabel;
+    }).catch(function(){ /* leave placeholders in place */ });
+  }
 
 })();
 </script>

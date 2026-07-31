@@ -40,7 +40,7 @@ def _format_seen(dt):
     return dt.strftime("%b %d, %I:%M %p").replace(" 0", " ")
 
 
-def analyze_logs(file):
+def analyze_logs(file, high_threshold=3, medium_threshold=2):
     if isinstance(file, str):
         with open(file, "r", encoding="utf-8", errors="ignore") as f:
             logs = [line.strip() for line in f if line.strip()]
@@ -132,7 +132,7 @@ def analyze_logs(file):
 
     suspicious_users = []
     for user, count in Counter(failed_users).items():
-        level = "HIGH" if count >= 3 else "MEDIUM"
+        level = "HIGH" if count >= high_threshold else "MEDIUM"
         suspicious_users.append({
             "user": user,
             "attempts": count,
@@ -143,7 +143,7 @@ def analyze_logs(file):
     for ip, count in Counter(failed_ips).items():
         if count == 0:
             continue
-        risk = "high" if count >= 3 else "medium" if count == 2 else "low"
+        risk = "high" if count >= high_threshold else "medium" if count >= medium_threshold else "low"
         suspicious_ip_rows.append({
             "ip": ip,
             "country": "Unknown",
@@ -151,16 +151,16 @@ def analyze_logs(file):
             "events": count,
             "seen": _format_seen(ip_last_seen.get(ip))
         })
-        # A brute-force pattern (3+ failed attempts from one IP) is a real
-        # critical event, even if the log never literally says "CRITICAL".
-        if count >= 3:
+        # A brute-force pattern (high_threshold+ failed attempts from one IP) is a
+        # real critical event, even if the log never literally says "CRITICAL".
+        if count >= high_threshold:
             severity["critical"] += 1
             critical_event_rows.append({
                 "title": "Possible brute-force attack from " + ip + " (" + str(count) + " failed attempts)",
                 "time": _format_seen(ip_last_seen.get(ip)),
                 "_dt": ip_last_seen.get(ip)
             })
-        elif count == 2:
+        elif count >= medium_threshold:
             severity["high"] += 1
 
     if not suspicious_ip_rows and ips:
