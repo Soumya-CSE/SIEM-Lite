@@ -186,6 +186,28 @@ Generate Security Dashboard
 
 
 ---
+
+### 🕰️ Analysis History
+<img width="1920" height="1016" alt="Analysis_History" src="https://github.com/user-attachments/assets/8cf97c3f-9902-4fd2-96dc-0802a9109b2f" />
+
+---
+
+### 🚨 Alerts
+<img width="1897" height="1015" alt="Alerts" src="https://github.com/user-attachments/assets/9802812d-3617-4c08-9db9-226eea684f07" />
+
+---
+
+### ⚙️ Settings
+<img width="1897" height="1026" alt="Settings" src="https://github.com/user-attachments/assets/ca9b99fd-a107-403c-ac79-6bc9097f5a74" />
+
+---
+
+### 📖 About
+<img width="1906" height="1029" alt="About1" src="https://github.com/user-attachments/assets/6dd32059-0875-4c1d-b65b-1c3dc3e678e9" />
+<img width="1907" height="1025" alt="About2" src="https://github.com/user-attachments/assets/1c64a80d-fb04-45cc-8efc-56697a443f2e" />
+
+---
+
 ## 🔐 Security Features
 
 * Authentication Log Analysis
