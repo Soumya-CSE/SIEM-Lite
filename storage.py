@@ -127,6 +127,10 @@ def save_scan(filename, result):
     uploaded_at = datetime.now().isoformat(timespec="seconds")
     conn = _connect()
     try:
+        prev_row = conn.execute(
+            "SELECT threat_score, failed_logins, suspicious_ips, critical_events, total_events "
+            "FROM scans ORDER BY id DESC LIMIT 1"
+        ).fetchone()
         cur = conn.execute(
             "INSERT INTO scans "
             "(filename, uploaded_at, threat_score, failed_logins, suspicious_ips, "
@@ -150,7 +154,17 @@ def save_scan(filename, result):
 
     retention = get_settings()["history_retention"]
     _prune_history(retention)
-    return scan_id, uploaded_at
+
+    previous = None
+    if prev_row:
+        previous = {
+            "threatScore": prev_row["threat_score"],
+            "failedLogins": prev_row["failed_logins"],
+            "suspiciousIps": prev_row["suspicious_ips"],
+            "criticalEvents": prev_row["critical_events"],
+            "totalEvents": prev_row["total_events"]
+        }
+    return scan_id, uploaded_at, previous
 
 
 def _prune_history(retention):
