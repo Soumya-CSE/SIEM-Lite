@@ -1048,36 +1048,23 @@
     return (bytes/1024/1024).toFixed(2) + ' MB';
   }
 
-  var analysisResult = null;
-  var scanCompleted = false;
   var API_ENDPOINT = '/analyze';
 
   function submitFile(file){
     var formData = new FormData();
     formData.append('logfile', file);
 
-    return fetch(API_ENDPOINT, {
-      method: 'POST',
-      body: formData
-    })
-    .then(function(response){
-      if(!response.ok){ throw new Error('Upload failed'); }
-      return response.json();
-    })
-    .then(function(json){
-      analysisResult = json;
-      DATA = json;
-      var sub = document.getElementById('dashHeadSub');
-      if(sub) sub.textContent = 'Overview of your log file analysis';
-      if(scanCompleted && state.hasData){
-        dashboardRendered = false;
-        renderDashboard();
-      }
-    })
-    .catch(function(err){
-      toast('Server error while analyzing file');
-      console.error(err);
-    });
+    return fetch(API_ENDPOINT, { method: 'POST', body: formData })
+      .then(function(response){
+        return response.json().then(function(json){
+          if(!response.ok){ throw new Error(json.error || 'Upload failed'); }
+          return json;
+        });
+      })
+      .catch(function(err){
+        console.error(err);
+        return null; // signal failure to the caller instead of rejecting
+      });
   }
 
   function handleFile(file){
@@ -1087,11 +1074,28 @@
       setTimeout(function(){ dropzone.classList.remove('is-error'); }, 1600);
       return;
     }
-    analysisResult = null;
-    scanCompleted = false;
-    dashboardRendered = false;
-    startScan(file);
-    submitFile(file);
+
+    var animationDone = startScan(file);
+    var fetchDone = submitFile(file);
+
+    Promise.all([animationDone, fetchDone]).then(function(results){
+      var json = results[1];
+      document.getElementById('scanOverlay').classList.remove('is-visible');
+
+      if(!json){
+        toast('Server error while analyzing that file — try again');
+        return;
+      }
+
+      DATA = json;
+      state.hasData = true;
+      dashboardRendered = false;
+      var sub = document.getElementById('dashHeadSub');
+      if(sub) sub.textContent = 'Overview of your log file analysis';
+      setActiveNav('dashboard');
+      showScreen('dashboard');
+      renderDashboard();
+    });
   }
 
   /* ---------------- SCAN SEQUENCE ---------------- */
@@ -1143,19 +1147,12 @@
       }, i * stepTime);
     });
 
-    setTimeout(function(){
-      overlay.classList.remove('is-visible');
-      state.hasData = true;
-      scanCompleted = true;
-      setActiveNav('dashboard');
-      showScreen('dashboard');
-      if(analysisResult){
-        dashboardRendered = false;
-        renderDashboard();
-      } else {
-        toast('Scan complete — waiting for server result');
-      }
-    }, total * stepTime + 550);
+    // Resolves once the cosmetic animation finishes — the overlay itself
+    // stays visible until handleFile also has the real fetch result, so a
+    // slow server response never gets cut off mid-analysis.
+    return new Promise(function(resolve){
+      setTimeout(resolve, total * stepTime + 550);
+    });
   }
 
   /* ---------------- DASHBOARD DATA ---------------- */

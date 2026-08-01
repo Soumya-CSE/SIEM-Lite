@@ -12,3 +12,4 @@ def test_suspicious_ips_are_detected_from_sample_log():
 
     assert result["suspiciousIps"] > 0
     assert any(item["ip"] == "45.22.10.5" for item in result["suspiciousIpRows"])
+    
