@@ -43,10 +43,11 @@ def analyze():
         return jsonify({"error": "Unable to parse uploaded log file"}), 400
 
     filename = file.filename or "uploaded.log"
-    scan_id, uploaded_at = storage.save_scan(filename, result)
+    scan_id, uploaded_at, previous_scan = storage.save_scan(filename, result)
     result["id"] = scan_id
     result["filename"] = filename
     result["uploadedAt"] = uploaded_at
+    result["previousScan"] = previous_scan
 
     return jsonify(result)
 
