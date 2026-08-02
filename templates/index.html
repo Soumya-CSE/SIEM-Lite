@@ -645,6 +645,7 @@
           </div>
           <div class="dash-head__actions">
             <button class="btn btn-ghost" id="newScanBtn" type="button"><svg class="icon" style="width:14px;height:14px;"><use href="#i-refresh"/></svg>New Scan</button>
+            <button class="btn btn-ghost" id="emailReportBtn" type="button"><svg class="icon" style="width:14px;height:14px;"><use href="#i-bell"/></svg>Email Report</button>
             <button class="btn btn-primary" id="downloadBtn" type="button"><svg class="icon" style="width:14px;height:14px;stroke:#01131d;"><use href="#i-download"/></svg>Download Report</button>
           </div>
         </div>
@@ -822,11 +823,6 @@
               <input class="form-input" type="number" id="retentionInput" min="1" max="500" step="1">
               <span class="form-field__hint">Older scans beyond this count are pruned automatically after every upload.</span>
             </div>
-            <div class="form-field">
-              <label for="alertEmailInput">Alert notification email <span style="color:var(--text-3);font-weight:400;">(optional)</span></label>
-              <input class="form-input" type="email" id="alertEmailInput" placeholder="you@company.com">
-              <span class="form-field__hint">Stored for future alerting — email delivery isn't wired up yet.</span>
-            </div>
           </div>
 
           <div class="toggle-row">
@@ -847,6 +843,35 @@
             <button class="btn btn-ghost" id="resetSettingsBtn" type="button">Reset to Defaults</button>
           </div>
           <div class="settings-saved-hint" id="settingsSavedHint"></div>
+        </div>
+
+        <div class="card" style="margin-top:16px;">
+          <div class="card__head">
+            <span class="card__title">Email Notifications</span>
+            <span class="card__hint">Send a scan report to your inbox whenever you want</span>
+          </div>
+
+          <div id="emailNotConfiguredNotice" style="display:none;background:var(--medium-dim);border:1px solid rgba(255,210,63,.3);border-radius:10px;padding:12px 14px;font-size:12.5px;color:var(--text-1);margin-bottom:18px;line-height:1.6;">
+            Email sending hasn't been set up on this server yet — that's a one-time step for whoever's running SIEM Lite, not something you need to configure here. See <code style="color:var(--accent-2);">.env.example</code> in the project folder for a 5-minute walkthrough.
+          </div>
+
+          <div class="form-row">
+            <div class="form-field form-field--full">
+              <label for="alertEmailInput">Send reports to</label>
+              <input class="form-input" type="email" id="alertEmailInput" placeholder="you@company.com">
+              <span class="form-field__hint">The address that receives test emails and any report you send from the Dashboard or History.</span>
+            </div>
+          </div>
+
+          <div class="settings-actions">
+            <button class="btn btn-primary" id="saveSettingsBtn2" type="button">
+              <svg class="icon" style="width:14px;height:14px;stroke:#01131d;"><use href="#i-check"/></svg>Save Email
+            </button>
+            <button class="btn btn-ghost" id="sendTestEmailBtn" type="button">
+              <svg class="icon" style="width:14px;height:14px;"><use href="#i-bell"/></svg>Send Test Email
+            </button>
+          </div>
+          <div class="settings-saved-hint" id="emailSavedHint"></div>
         </div>
       </section>
 
@@ -1048,36 +1073,23 @@
     return (bytes/1024/1024).toFixed(2) + ' MB';
   }
 
-  var analysisResult = null;
-  var scanCompleted = false;
   var API_ENDPOINT = '/analyze';
 
   function submitFile(file){
     var formData = new FormData();
     formData.append('logfile', file);
 
-    return fetch(API_ENDPOINT, {
-      method: 'POST',
-      body: formData
-    })
-    .then(function(response){
-      if(!response.ok){ throw new Error('Upload failed'); }
-      return response.json();
-    })
-    .then(function(json){
-      analysisResult = json;
-      DATA = json;
-      var sub = document.getElementById('dashHeadSub');
-      if(sub) sub.textContent = 'Overview of your log file analysis';
-      if(scanCompleted && state.hasData){
-        dashboardRendered = false;
-        renderDashboard();
-      }
-    })
-    .catch(function(err){
-      toast('Server error while analyzing file');
-      console.error(err);
-    });
+    return fetch(API_ENDPOINT, { method: 'POST', body: formData })
+      .then(function(response){
+        return response.json().then(function(json){
+          if(!response.ok){ throw new Error(json.error || 'Upload failed'); }
+          return json;
+        });
+      })
+      .catch(function(err){
+        console.error(err);
+        return null; // signal failure to the caller instead of rejecting
+      });
   }
 
   function handleFile(file){
@@ -1087,11 +1099,28 @@
       setTimeout(function(){ dropzone.classList.remove('is-error'); }, 1600);
       return;
     }
-    analysisResult = null;
-    scanCompleted = false;
-    dashboardRendered = false;
-    startScan(file);
-    submitFile(file);
+
+    var animationDone = startScan(file);
+    var fetchDone = submitFile(file);
+
+    Promise.all([animationDone, fetchDone]).then(function(results){
+      var json = results[1];
+      document.getElementById('scanOverlay').classList.remove('is-visible');
+
+      if(!json){
+        toast('Server error while analyzing that file — try again');
+        return;
+      }
+
+      DATA = json;
+      state.hasData = true;
+      dashboardRendered = false;
+      var sub = document.getElementById('dashHeadSub');
+      if(sub) sub.textContent = 'Overview of your log file analysis';
+      setActiveNav('dashboard');
+      showScreen('dashboard');
+      renderDashboard();
+    });
   }
 
   /* ---------------- SCAN SEQUENCE ---------------- */
@@ -1143,19 +1172,12 @@
       }, i * stepTime);
     });
 
-    setTimeout(function(){
-      overlay.classList.remove('is-visible');
-      state.hasData = true;
-      scanCompleted = true;
-      setActiveNav('dashboard');
-      showScreen('dashboard');
-      if(analysisResult){
-        dashboardRendered = false;
-        renderDashboard();
-      } else {
-        toast('Scan complete — waiting for server result');
-      }
-    }, total * stepTime + 550);
+    // Resolves once the cosmetic animation finishes — the overlay itself
+    // stays visible until handleFile also has the real fetch result, so a
+    // slow server response never gets cut off mid-analysis.
+    return new Promise(function(resolve){
+      setTimeout(resolve, total * stepTime + 550);
+    });
   }
 
   /* ---------------- DASHBOARD DATA ---------------- */
@@ -1517,14 +1539,20 @@
           '<div class="history-row__stat"><div class="history-row__stat-val">'+item.suspiciousIps+'</div><div class="history-row__stat-lbl">IPs</div></div>' +
           '<div class="history-row__stat"><div class="history-row__stat-val">'+item.criticalEvents+'</div><div class="history-row__stat-lbl">Critical</div></div>' +
         '</div>' +
-        '<div class="icon-btn danger" title="Delete this scan" data-id="'+item.id+'"><svg class="icon"><use href="#i-ban"/></svg></div>';
+        '<div class="row-actions">' +
+          '<div class="icon-btn" title="Email this report" data-action="email" data-id="'+item.id+'"><svg class="icon"><use href="#i-bell"/></svg></div>' +
+          '<div class="icon-btn danger" title="Delete this scan" data-action="delete" data-id="'+item.id+'"><svg class="icon"><use href="#i-ban"/></svg></div>' +
+        '</div>';
       row.addEventListener('click', function(e){
-        if(e.target.closest('.icon-btn')) return;
+        var actionBtn = e.target.closest('[data-action]');
+        if(actionBtn){
+          e.stopPropagation();
+          var id = parseInt(actionBtn.getAttribute('data-id'), 10);
+          if(actionBtn.getAttribute('data-action') === 'delete') deleteHistoryScan(id);
+          else emailHistoryScan(id, actionBtn);
+          return;
+        }
         openHistoryScan(item.id);
-      });
-      row.querySelector('.icon-btn').addEventListener('click', function(e){
-        e.stopPropagation();
-        deleteHistoryScan(item.id);
       });
       list.appendChild(row);
     });
@@ -1550,6 +1578,15 @@
       toast('Scan removed');
       loadHistory();
     }).catch(function(){ toast('Couldn\u2019t delete that scan'); });
+  }
+
+  function emailHistoryScan(id, btnEl){
+    if(btnEl) btnEl.style.pointerEvents = 'none';
+    apiPost('/api/email/send', { scanId: id }).then(function(){
+      toast('Report emailed \u2014 check your inbox');
+    }).catch(function(err){
+      toast(err.message || 'Couldn\u2019t send that report');
+    }).finally(function(){ if(btnEl) btnEl.style.pointerEvents = ''; });
   }
 
   document.getElementById('clearHistoryBtn').addEventListener('click', function(){
@@ -1625,31 +1662,65 @@
 
   function loadSettings(){
     document.getElementById('settingsSavedHint').textContent = '';
+    document.getElementById('emailSavedHint').textContent = '';
     apiGet('/api/settings').then(fillSettingsForm).catch(function(){
       toast('Couldn\u2019t load settings — is the server running?');
     });
+    apiGet('/api/email/status').then(function(status){
+      document.getElementById('emailNotConfiguredNotice').style.display = status.configured ? 'none' : 'block';
+    }).catch(function(){ /* leave notice hidden if the check itself fails */ });
   }
 
-  document.getElementById('saveSettingsBtn').addEventListener('click', function(){
-    var payload = {
+  function collectSettingsPayload(){
+    return {
       high_risk_threshold: parseInt(document.getElementById('highThresholdInput').value, 10),
       medium_risk_threshold: parseInt(document.getElementById('mediumThresholdInput').value, 10),
       history_retention: parseInt(document.getElementById('retentionInput').value, 10),
       alert_email: document.getElementById('alertEmailInput').value,
       alerts_enabled: document.getElementById('alertsEnabledInput').checked
     };
-    apiPost('/api/settings', payload).then(function(s){
+  }
+
+  function saveSettings(){
+    apiPost('/api/settings', collectSettingsPayload()).then(function(s){
       fillSettingsForm(s);
       toast('Settings saved');
       document.getElementById('settingsSavedHint').textContent = 'Applies to every scan from now on.';
+      document.getElementById('emailSavedHint').textContent = 'Saved.';
     }).catch(function(err){
       toast(err.message || 'Couldn\u2019t save settings');
     });
-  });
+  }
+  document.getElementById('saveSettingsBtn').addEventListener('click', saveSettings);
+  document.getElementById('saveSettingsBtn2').addEventListener('click', saveSettings);
 
   document.getElementById('resetSettingsBtn').addEventListener('click', function(){
     fillSettingsForm(DEFAULT_SETTINGS_CLIENT);
     document.getElementById('settingsSavedHint').textContent = 'Defaults loaded — click Save Settings to apply.';
+  });
+
+  document.getElementById('sendTestEmailBtn').addEventListener('click', function(){
+    var btn = document.getElementById('sendTestEmailBtn');
+    var hint = document.getElementById('emailSavedHint');
+    btn.disabled = true;
+    hint.textContent = 'Sending test email\u2026';
+    apiPost('/api/email/test', {}).then(function(){
+      toast('Test email sent \u2014 check your inbox');
+      hint.textContent = 'Test email sent successfully.';
+    }).catch(function(err){
+      toast(err.message || 'Couldn\u2019t send test email');
+      hint.textContent = err.message || 'Couldn\u2019t send test email.';
+    }).finally(function(){ btn.disabled = false; });
+  });
+
+  document.getElementById('emailReportBtn').addEventListener('click', function(){
+    var btn = document.getElementById('emailReportBtn');
+    btn.disabled = true;
+    apiPost('/api/email/send', { scanId: DATA.id }).then(function(){
+      toast('Report emailed \u2014 check your inbox');
+    }).catch(function(err){
+      toast(err.message || 'Couldn\u2019t send that report');
+    }).finally(function(){ btn.disabled = false; });
   });
 
   /* ================= ABOUT ================= */

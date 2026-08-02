@@ -73,6 +73,14 @@ def get_settings():
     return merged
 
 
+def get_public_settings():
+    """Kept as a separate function in case future settings ever need masking;
+    today it's identical to get_settings() since nothing sensitive is stored
+    in the settings table anymore (SMTP credentials live in environment
+    variables instead - see mailer.py)."""
+    return get_settings()
+
+
 def update_settings(patch):
     current = get_settings()
 
