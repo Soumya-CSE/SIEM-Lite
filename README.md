@@ -179,10 +179,9 @@ Generate Security Dashboard
 
 
 ### 📊 Analysis Report
-
-<img width="1892" height="1037" alt="Dashboard1" src="https://github.com/user-attachments/assets/dc63becb-00fb-4f96-afbf-2b0cc8007e4e" />
-<img width="1907" height="1014" alt="Dashboard2" src="https://github.com/user-attachments/assets/11ec4990-c536-407a-b2d2-4f9a9bc12cb5" />
-<img width="1907" height="1023" alt="Dashboard3" src="https://github.com/user-attachments/assets/e15a0b89-e1a5-420a-9ccf-a5d5947749d2" />
+<img width="1910" height="1012" alt="Dashboard1" src="https://github.com/user-attachments/assets/0df6a34b-3964-478f-a1da-47109580faad" />
+<img width="1891" height="1026" alt="Dashboard2" src="https://github.com/user-attachments/assets/4c585e28-8b30-474e-ac38-85d2ca5a1057" />
+<img width="1889" height="1021" alt="Dashboard3" src="https://github.com/user-attachments/assets/b5fd3480-788a-4eeb-8ea0-3a13b943904e" />
 
 
 ---
@@ -198,7 +197,9 @@ Generate Security Dashboard
 ---
 
 ### ⚙️ Settings
-<img width="1897" height="1026" alt="Settings" src="https://github.com/user-attachments/assets/ca9b99fd-a107-403c-ac79-6bc9097f5a74" />
+<img width="1896" height="1010" alt="Settings1" src="https://github.com/user-attachments/assets/3eb84020-9ea4-450a-a875-acebf94b65eb" />
+<img width="1902" height="1024" alt="Settings2" src="https://github.com/user-attachments/assets/fc0902b6-9bdb-4bbe-a89a-d7738f533432" />
+
 
 ---
 
@@ -207,6 +208,13 @@ Generate Security Dashboard
 <img width="1907" height="1025" alt="About2" src="https://github.com/user-attachments/assets/1c64a80d-fb04-45cc-8efc-56697a443f2e" />
 
 ---
+
+### 📧 Emailed Scanned Reports
+<img width="1920" height="1010" alt="Emailed-Scan-Report1" src="https://github.com/user-attachments/assets/a604ce22-e40d-49cf-852e-6b68c7d3e974" />
+<img width="1920" height="1010" alt="Emailed-Scan-Report" src="https://github.com/user-attachments/assets/d2cd827b-8c1b-4f84-9f9b-efd3ccff819a" />
+
+---
+
 
 ## 🔐 Security Features
 
@@ -287,6 +295,10 @@ Contributions are welcome!
 This project is licensed under the **MIT License**.
 
 ---
+
+## 📩 Contact Us
+
+**Reach out to us at** siemliteofficial@gmail.com
 
 ## 👨‍💻 Author
 
