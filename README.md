@@ -65,6 +65,12 @@ SOC-Log-Analyzer/
 ├── tests/
 │   ├── testanalyzer.py
 |
+|
+|
+├── data/
+|    ├── siem_lite.db
+|
+|
 ├── uploads/
 |   ├── sample.log
 │
@@ -72,7 +78,7 @@ SOC-Log-Analyzer/
 ├── templates/
 │   ├── index.html
 │   
-│
+├── .env
 │
 ├── dashboard.png
 │
