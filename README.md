@@ -57,17 +57,22 @@ SOC-Log-Analyzer/
 │
 ├── app.py
 ├── analyzer.py
+├── storage.py
+├── mailer.py
 ├── requirements.txt
-├── sample.log
-│
+|
+|
+├── tests/
+│   ├── testanalyzer.py
+|
 ├── uploads/
+|   ├── sample.log
 │
+|
 ├── templates/
 │   ├── index.html
-│   └── result.html
+│   
 │
-├── static/
-│   └── style.css
 │
 ├── dashboard.png
 │
